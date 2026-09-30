@@ -68,6 +68,7 @@
         <postgresql.version>42.7.13</postgresql.version>
         <weld-junit5.version>5.0.3.Final</weld-junit5.version>
         <smallrye-config.version>4.0.0</smallrye-config.version>
+        <hikaricp.version>7.1.0</hikaricp.version>
 
         <!-- Servlet container and CDI -->
         <tomcat.version>11.0.26</tomcat.version>
@@ -100,6 +101,23 @@
                 <version>${fluda.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- FluDa TX modules (not yet in BOM) -->
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-tx-core</artifactId>
+                <version>${fluda.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-tx-cdi</artifactId>
+                <version>${fluda.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-tx-jdbc</artifactId>
+                <version>${fluda.version}</version>
             </dependency>
 
             <!-- BOMs -->
@@ -191,6 +209,11 @@
                 <groupId>io.smallrye.config</groupId>
                 <artifactId>smallrye-config</artifactId>
                 <version>${smallrye-config.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikaricp.version}</version>
             </dependency>
 
             <!-- Tomcat -->

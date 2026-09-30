@@ -32,6 +32,7 @@ public class EngineerServletIT {
                         DataSourceProducer.class,
                         DatabaseInitializer.class,
                         Engineer.class,
+                        EngineerService.class,
                         EngineerServlet.class
                 )
                 .addAsWebInfResource("test-web.xml", "web.xml")

@@ -1,14 +1,14 @@
 package com.example;
 
+import io.github.fludakit.tx.PlatformTransactionManager;
+import io.github.fludakit.tx.jdbc.DataSourceTransactionManager;
+import io.github.fludakit.tx.jdbc.TransactionAwareDataSourceProxy;
+
 import javax.sql.DataSource;
 import jakarta.annotation.Resource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
-/**
- * Bridges the JNDI {@link DataSource} declared in {@code META-INF/context.xml} to a CDI bean so the
- * {@code cdi} module's {@code JdbcClientProducer} can consume it, and creates the table on startup.
- */
 @ApplicationScoped
 public class DataSourceProducer {
 
@@ -18,6 +18,12 @@ public class DataSourceProducer {
     @Produces
     @ApplicationScoped
     public DataSource expose() {
-        return dataSource;
+        return new TransactionAwareDataSourceProxy(dataSource);
+    }
+
+    @Produces
+    @ApplicationScoped
+    public PlatformTransactionManager transactionManager() {
+        return new DataSourceTransactionManager(dataSource);
     }
 }

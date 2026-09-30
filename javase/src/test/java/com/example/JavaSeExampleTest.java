@@ -3,7 +3,10 @@ package com.example;
 import io.github.fludakit.jdbc.JdbcClient;
 import io.github.fludakit.jdbc.cdi.ConverterRegistryProducer;
 import io.github.fludakit.jdbc.cdi.JdbcClientProducer;
+import io.github.fludakit.tx.cdi.TransactionalCdiExtension;
+import io.github.fludakit.tx.cdi.TransactionalInterceptor;
 import org.jboss.weld.junit5.auto.AddBeanClasses;
+import org.jboss.weld.junit5.auto.AddExtensions;
 import org.jboss.weld.junit5.auto.EnableAutoWeld;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,14 +16,12 @@ import javax.sql.DataSource;
 import jakarta.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Exercises the CDI-produced {@link JdbcClient} with Weld's JUnit 5 extension, mirroring the
- * {@code cdi} module's own tests.
- */
 @EnableAutoWeld
-@AddBeanClasses({JdbcClientProducer.class, ConverterRegistryProducer.class, DataSourceProducer.class})
+@AddBeanClasses({JdbcClientProducer.class, ConverterRegistryProducer.class, DataSourceProducer.class, EngineerService.class})
+@AddExtensions({TransactionalCdiExtension.class})
 class JavaSeExampleTest {
 
     @Inject
@@ -28,6 +29,9 @@ class JavaSeExampleTest {
 
     @Inject
     DataSource dataSource;
+
+    @Inject
+    EngineerService service;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -39,28 +43,26 @@ class JavaSeExampleTest {
 
     @Test
     void crud() {
-        // insert
         assertEquals(1, client.sql("INSERT INTO engineers (name) VALUES (:name)").param("name", "Ada").update());
 
-        // get all
-        List<Engineer> all = client.sql("SELECT id, name FROM engineers ORDER BY id").query(Engineer.class).list();
+        List<Engineer> all = service.findAll();
         assertEquals(1, all.size());
         assertEquals("Ada", all.get(0).name());
 
-        // get by id
-        Engineer ada = client.sql("SELECT id, name FROM engineers WHERE id = :id")
-                .param("id", all.get(0).id()).query(Engineer.class).single();
+        Engineer ada = service.findById(all.get(0).id());
         assertEquals("Ada", ada.name());
 
-        // update
-        client.sql("UPDATE engineers SET name = :name WHERE id = :id")
-                .param("name", "Ada Lovelace").param("id", ada.id()).update();
-        Engineer updated = client.sql("SELECT id, name FROM engineers WHERE id = :id")
-                .param("id", ada.id()).query(Engineer.class).single();
+        service.update(ada.id(), "Ada Lovelace");
+        Engineer updated = service.findById(ada.id());
         assertEquals("Ada Lovelace", updated.name());
 
-        // delete
-        client.sql("DELETE FROM engineers WHERE id = :id").param("id", ada.id()).update();
-        assertTrue(client.sql("SELECT id, name FROM engineers").query(Engineer.class).list().isEmpty());
+        service.delete(ada.id());
+        assertTrue(service.findAll().isEmpty());
+    }
+
+    @Test
+    void transactionalRollback() {
+        assertThrows(IllegalStateException.class, () -> service.createTwo("Ada", null));
+        assertTrue(service.findAll().isEmpty(), "both inserts should be rolled back");
     }
 }

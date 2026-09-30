@@ -49,6 +49,7 @@ public class JdbcClientIT {
                         DataSourceProducer.class,
                         DatabaseInitializer.class,
                         Engineer.class,
+                        EngineerService.class,
                         EngineerResource.class,
                         JaxRsApplication.class
                 )
