@@ -22,19 +22,10 @@ jobs:
           distribution: temurin
           cache: maven
           server-id: "github-fludakit"
-      - name: Checkout jdbc-client
-        uses: actions/checkout@v7
-        with:
-          repository: fludakit/jdbc-client
-          path: jdbc-client
-      - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
-        env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
       - name: Build vanilla example
         run: mvn -B -ntp -pl vanilla verify
         env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
+          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
 
   javase:
     name: Java SE (core + CDI, Weld SE)
@@ -50,19 +41,11 @@ jobs:
           distribution: temurin
           cache: maven
           server-id: "github-fludakit"
-      - name: Checkout jdbc-client
-        uses: actions/checkout@v7
-        with:
-          repository: fludakit/jdbc-client
-          path: jdbc-client
-      - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
-        env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
+
       - name: Build javase example
         run: mvn -B -ntp -pl javase verify
         env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
+          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
 
   servlet:
     name: Servlet (Tomcat 11 + MariaDB)
@@ -91,19 +74,10 @@ jobs:
           distribution: temurin
           cache: maven
           server-id: "github-fludakit"
-      - name: Checkout jdbc-client
-        uses: actions/checkout@v7
-        with:
-          repository: fludakit/jdbc-client
-          path: jdbc-client
-      - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
-        env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
       - name: Run servlet ITs on embedded Tomcat
         run: mvn -B -ntp -pl servlet -Parq-tomcat-embedded verify
         env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
+          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
 
   jakartaee-glassfish:
     name: Jakarta EE (GlassFish)
@@ -133,19 +107,10 @@ jobs:
           distribution: temurin
           cache: maven
           server-id: "github-fludakit"
-      - name: Checkout jdbc-client
-        uses: actions/checkout@v7
-        with:
-          repository: fludakit/jdbc-client
-          path: jdbc-client
-      - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
-        env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
       - name: Run GlassFish integration tests
         run: mvn -B -ntp -pl jakartaee -Parq-glassfish-managed verify
         env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
+          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
 
   jakartaee-wildfly:
     name: Jakarta EE (WildFly)
@@ -175,16 +140,7 @@ jobs:
           distribution: temurin
           cache: maven
           server-id: "github-fludakit"
-      - name: Checkout jdbc-client
-        uses: actions/checkout@v7
-        with:
-          repository: fludakit/jdbc-client
-          path: jdbc-client
-      - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
-        env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
       - name: Run WildFly integration tests
         run: mvn -B -ntp -pl jakartaee -Parq-wildfly-managed verify
         env:
-          MAVEN_PASSWORD: ${{ secrets.ORG_PACKAGE_READ_TOKEN }}
+          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
