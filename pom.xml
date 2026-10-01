@@ -338,60 +338,16 @@
     </build>
 
     <repositories>
-        <repository>
-            <name>GitHub Packages - Parent</name>
-            <id>github-parent</id>
-            <url>https://maven.pkg.github.com/fludakit/parent</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <name>Central Portal Snapshots</name>
-            <id>central-portal-snapshots</id>
-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <name>GitHub Packages - SQL Init</name>
-            <id>github-sql-init</id>
-            <url>https://maven.pkg.github.com/fludakit/sql-init</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <name>GitHub Packages - JDBC Client</name>
-            <id>github-jdbc-client</id>
-            <url>https://maven.pkg.github.com/fludakit/jdbc-client</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <name>GitHub Packages - TX</name>
-            <id>github-tx</id>
-            <url>https://maven.pkg.github.com/fludakit/tx</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
+         <repository>
+                 <name>GitHub Packages - Fludakit Org</name>
+                 <id>github-fludakit</id>
+                 <url>https://maven.pkg.github.com/fludakit/*</url>
+                 <releases>
+                     <enabled>false</enabled>
+                 </releases>
+                 <snapshots>
+                     <enabled>true</enabled>
+                 </snapshots>
+             </repository>
     </repositories>
 </project>
