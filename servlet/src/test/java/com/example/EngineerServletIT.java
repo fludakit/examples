@@ -1,5 +1,6 @@
 package com.example;
 
+import io.github.fludakit.sqlinit.cdi.SqlInitBootstrapper;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.container.annotation.ArquillianTest;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -30,14 +31,15 @@ public class EngineerServletIT {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, "servlet-example.war")
                 .addClasses(
                         DataSourceProducer.class,
-                        DatabaseInitializer.class,
                         Engineer.class,
                         EngineerService.class,
-                        EngineerServlet.class
+                        EngineerServlet.class,
+                        SqlInitBootstrapper.class
                 )
                 .addAsWebInfResource("test-web.xml", "web.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource("test-context.xml", "context.xml");
+                .addAsManifestResource("test-context.xml", "context.xml")
+                .addAsResource("db/migration/V1__create_engineers.sql");
         LOGGER.log(Level.INFO, "deployment archive: {0}", new Object[]{archive.toString(true)});
         return archive;
     }

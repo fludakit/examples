@@ -39,6 +39,10 @@
             <artifactId>fluda-tx-jdbc</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.github.fludakit</groupId>
+            <artifactId>fluda-sql-init-cdi</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
         </dependency>

@@ -4,6 +4,7 @@ import io.github.fludakit.jdbc.JdbcClient;
 import io.github.fludakit.jdbc.JdbcClientException;
 import io.github.fludakit.jdbc.support.GeneratedKeyHolder;
 import io.github.fludakit.jdbc.support.KeyHolder;
+import io.github.fludakit.sqlinit.cdi.SqlInitBootstrapper;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.container.annotation.ArquillianTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -39,7 +40,10 @@ public class JdbcClientIT {
                 .resolve("org.postgresql:postgresql",
                         "io.github.fludakit:fluda-jdbc-client-core",
                         "io.github.fludakit:fluda-jdbc-client-cdi",
-                        "io.github.fludakit:fluda-jdbc-client-config"
+                        "io.github.fludakit:fluda-jdbc-client-config",
+                        "io.github.fludakit:fluda-sql-init-core",
+                        "io.github.fludakit:fluda-sql-init-config",
+                        "io.github.fludakit:fluda-sql-init-cdi"
                 )
                 .withTransitivity()
                 .asFile();
@@ -47,13 +51,14 @@ public class JdbcClientIT {
                 .addAsLibraries(libs)
                 .addClasses(
                         DataSourceProducer.class,
-                        DatabaseInitializer.class,
                         Engineer.class,
                         EngineerService.class,
                         EngineerResource.class,
-                        JaxRsApplication.class
+                        JaxRsApplication.class,
+                        SqlInitBootstrapper.class
                 )
                 .addAsResource("microprofile-config.properties")
+                .addAsResource("db/migration/V1__create_engineers.sql")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         LOGGER.log(Level.INFO, "deployment archive: {0}", archive.toString(true));
         return archive;
