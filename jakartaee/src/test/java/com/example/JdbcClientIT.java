@@ -45,7 +45,7 @@ public class JdbcClientIT {
                         "io.github.fludakit:fluda-sql-init-config",
                         "io.github.fludakit:fluda-sql-init-cdi"
                 )
-                .withTransitivity()
+                .withoutTransitivity()
                 .asFile();
         WebArchive archive = ShrinkWrap.create(WebArchive.class, "test-jdbc-client.war")
                 .addAsLibraries(libs)
@@ -54,8 +54,7 @@ public class JdbcClientIT {
                         Engineer.class,
                         EngineerService.class,
                         EngineerResource.class,
-                        JaxRsApplication.class,
-                        SqlInitBootstrapper.class
+                        JaxRsApplication.class
                 )
                 .addAsResource("microprofile-config.properties")
                 .addAsResource("db/migration/V1__create_engineers.sql")

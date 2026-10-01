@@ -5,6 +5,7 @@ import jakarta.annotation.Resource;
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Named;
 
 /**
  * Declares a self-contained PostgreSQL {@link DataSource} under the portable {@code java:comp/MyDS}
@@ -12,7 +13,7 @@ import jakarta.enterprise.inject.Produces;
  */
 @DataSourceDefinition(
         name = "java:comp/MyDS",
-        className = "org.postgresql.ds.PGSimpleDataSource", // org.postgresql.xa.PGXADataSource for JTA multiple ds
+        className = "org.postgresql.xa.PGXADataSource", // org.postgresql.xa.PGXADataSource for JTA multiple ds
         url = "jdbc:postgresql://localhost:5432/postgres",
         user = "postgres",
         password = "postgres"
