@@ -144,3 +144,22 @@ jobs:
         run: mvn -B -ntp -pl jakartaee -Parq-wildfly-managed verify
         env:
           GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
+
+  sql-init:
+    name: SQL Init (Custom version strategy + S3)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Build sql-init example
+        run: mvn -B -ntp -pl sql-init verify
+        env:
+          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
