@@ -4,12 +4,13 @@ Runnable examples for the fluent JDBC client.
 
 ## Overview
 
-| Example                  | Packaging | Modules + Database          | Demonstrates                                                                                                                    |
-|--------------------------|-----------|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| [`vanilla`](vanilla)     | jar       | core, H2                    | The core `JdbcClient` with no CDI, backed by an in-memory H2 `DataSource`.                                                      |
-| [`javase`](javase)       | jar       | core/cdi, H2                | The core + CDI modules, bootstrapped with Weld SE from a `main()` method.                                                       |
-| [`servlet`](servlet)     | war       | core/cdi, MariaDB           | The core + CDI modules in a Servlet container (Tomcat 11), with the `DataSource` provided via JNDI from `META-INF/context.xml`. |
+| Example              | Packaging | Modules + Database          | Demonstrates                                                                                                                    |
+|----------------------|-----------|-----------------------------|---------------------------------------------------------------------------------------------------------------------------------|
+| [`vanilla`](vanilla) | jar       | core, H2                    | The core `JdbcClient` with no CDI, backed by an in-memory H2 `DataSource`.                                                      |
+| [`javase`](javase)   | jar       | core/cdi, H2                | The core + CDI modules, bootstrapped with Weld SE from a `main()` method.                                                       |
+| [`servlet`](servlet) | war       | core/cdi, MariaDB           | The core + CDI modules in a Servlet container (Tomcat 11), with the `DataSource` provided via JNDI from `META-INF/context.xml`. |
 | [`jakartaee`](jakartaee) | war       | core/cdi/config, PostgreSQL | The core + CDI modules behind a JAX-RS resource on GlassFish / WildFly, backed by PostgreSQL.                                   |
+| [`sql-init`](sql-init) | jar       | sql-init, H2, S3            | SQL migration initialization with custom version strategy and S3 resource resolver.                                             |
 
 ## Prerequisites
 
@@ -39,6 +40,9 @@ cd jdbc-client
 
 # jakartaee (requires PostgreSQL)
 ./mvnw -pl jakartaee -Parq-glassfish-managed verify
+
+# sql-init (requires Docker for LocalStack tests)
+./mvnw -pl sql-init verify
 ```
 
 ## Run

@@ -39,7 +39,7 @@
         <module>javase</module>
         <module>servlet</module>
         <module>jakartaee</module>
-        <module>sql-init-standalone</module>
+        <module>sql-init</module>
     </modules>
 
     <properties>

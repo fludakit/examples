@@ -11,11 +11,11 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>sql-init-standalone-example</artifactId>
+    <artifactId>sql-init-example</artifactId>
     <packaging>jar</packaging>
 
-    <name>FluDa :: Examples :: SQL Init Standalone</name>
-    <description>Standalone SQL init example with custom version strategy and S3 resource resolver.</description>
+    <name>FluDa :: Examples :: SQL Init</name>
+    <description>SQL init example with custom version strategy and S3 resource resolver.</description>
 
     <properties>
         <testcontainers.version>1.20.4</testcontainers.version>
