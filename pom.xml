@@ -39,10 +39,13 @@
         <module>javase</module>
         <module>servlet</module>
         <module>jakartaee</module>
+        <module>sql-init-standalone</module>
     </modules>
 
     <properties>
-        <fluda.version>1.0.0-SNAPSHOT</fluda.version>
+        <fluda-jdbc-client.version>1.0.0-SNAPSHOT</fluda-jdbc-client.version>
+        <fluda-sql-init.version>1.0.0-SNAPSHOT</fluda-sql-init.version>
+        <fluda-tx.version>1.0.0-SNAPSHOT</fluda-tx.version>
 
         <!-- Global Config -->
         <maven.compiler.release>21</maven.compiler.release>
@@ -94,30 +97,55 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- FluDa BOM -->
+            <!-- FluDa JDBC Client modules -->
             <dependency>
                 <groupId>io.github.fludakit</groupId>
-                <artifactId>fluda-bom</artifactId>
-                <version>${fluda.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <artifactId>fluda-jdbc-client-core</artifactId>
+                <version>${fluda-jdbc-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-jdbc-client-config</artifactId>
+                <version>${fluda-jdbc-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-jdbc-client-cdi</artifactId>
+                <version>${fluda-jdbc-client.version}</version>
             </dependency>
 
-            <!-- FluDa TX modules (not yet in BOM) -->
+            <!-- FluDa TX modules -->
             <dependency>
                 <groupId>io.github.fludakit</groupId>
                 <artifactId>fluda-tx-core</artifactId>
-                <version>${fluda.version}</version>
+                <version>${fluda-tx.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.fludakit</groupId>
                 <artifactId>fluda-tx-cdi</artifactId>
-                <version>${fluda.version}</version>
+                <version>${fluda-tx.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.fludakit</groupId>
                 <artifactId>fluda-tx-jdbc</artifactId>
-                <version>${fluda.version}</version>
+                <version>${fluda-tx.version}</version>
+            </dependency>
+
+            <!-- FluDa SQL Init modules -->
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-sql-init-core</artifactId>
+                <version>${fluda-sql-init.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-sql-init-config</artifactId>
+                <version>${fluda-sql-init.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-sql-init-cdi</artifactId>
+                <version>${fluda-sql-init.version}</version>
             </dependency>
 
             <!-- BOMs -->
@@ -314,6 +342,39 @@
             <name>Central Portal Snapshots</name>
             <id>central-portal-snapshots</id>
             <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <name>GitHub Packages - SQL Init</name>
+            <id>github-sql-init</id>
+            <url>https://maven.pkg.github.com/fludakit/sql-init</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <name>GitHub Packages - JDBC Client</name>
+            <id>github-jdbc-client</id>
+            <url>https://maven.pkg.github.com/fludakit/jdbc-client</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <name>GitHub Packages - TX</name>
+            <id>github-tx</id>
+            <url>https://maven.pkg.github.com/fludakit/tx</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
