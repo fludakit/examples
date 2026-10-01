@@ -75,7 +75,7 @@
 
         <!-- Servlet container and CDI -->
         <tomcat.version>11.0.26</tomcat.version>
-        <weld.version>6.0.4.Final</weld.version>
+        <weld.version>7.0.0.Final</weld.version>
 
         <!-- Databases -->
         <mariadb.version>3.5.10</mariadb.version>
@@ -84,7 +84,7 @@
         <arquillian-bom.version>1.10.2.Final</arquillian-bom.version>
         <arquillian-jakarta-bom.version>10.0.0.Final</arquillian-jakarta-bom.version>
         <shrinkwrap-resolver-bom.version>3.3.7</shrinkwrap-resolver-bom.version>
-        <arquillian-glassfish.version>7.0.14</arquillian-glassfish.version>
+        <arquillian-glassfish.version>7.1.1</arquillian-glassfish.version>
         <arquillian-tomcat.version>1.2.5.Final</arquillian-tomcat.version>
         <glassfish.version>8.0.4</glassfish.version>
         <wildfly.version>41.0.0.Final</wildfly.version>
