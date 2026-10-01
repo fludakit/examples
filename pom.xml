@@ -87,7 +87,7 @@
         <arquillian-glassfish.version>7.1.1</arquillian-glassfish.version>
         <arquillian-tomcat.version>1.2.5.Final</arquillian-tomcat.version>
         <glassfish.version>8.0.4</glassfish.version>
-        <wildfly.version>41.0.0.Final</wildfly.version>
+        <wildfly.version>41.0.1.Final</wildfly.version>
         <wildfly-arquillian.version>6.0.0.Alpha1</wildfly-arquillian.version>
 
         <!-- Tooling -->
