@@ -55,6 +55,10 @@ public class EngineerServletIT {
                         .POST(HttpRequest.BodyPublishers.noBody()).build(),
                 HttpResponse.BodyHandlers.ofString());
         assertEquals(201, created.statusCode(), created.body());
+        
+        // extract the ID from the response (format: "created id=X")
+        String createdBody = created.body();
+        long id = Long.parseLong(createdBody.substring(createdBody.indexOf("id=") + 3).trim());
 
         // get all
         HttpResponse<String> all = http.send(
@@ -63,23 +67,23 @@ public class EngineerServletIT {
         assertEquals(200, all.statusCode(), all.body());
         assertTrue(all.body().contains("Ada"), all.body());
 
-        // get by id (the only row has id 1)
+        // get by id
         HttpResponse<String> byId = http.send(
-                HttpRequest.newBuilder(base.resolve("engineers/1")).GET().build(),
+                HttpRequest.newBuilder(base.resolve("engineers/" + id)).GET().build(),
                 HttpResponse.BodyHandlers.ofString());
         assertEquals(200, byId.statusCode(), byId.body());
         assertTrue(byId.body().contains("Ada"), byId.body());
 
         // update
         HttpResponse<String> updated = http.send(
-                HttpRequest.newBuilder(base.resolve("engineers/1?name=Ada%20Lovelace"))
+                HttpRequest.newBuilder(base.resolve("engineers/" + id + "?name=Ada%20Lovelace"))
                         .PUT(HttpRequest.BodyPublishers.noBody()).build(),
                 HttpResponse.BodyHandlers.ofString());
         assertEquals(200, updated.statusCode(), updated.body());
 
         // delete
         HttpResponse<String> deleted = http.send(
-                HttpRequest.newBuilder(base.resolve("engineers/1")).DELETE().build(),
+                HttpRequest.newBuilder(base.resolve("engineers/" + id)).DELETE().build(),
                 HttpResponse.BodyHandlers.ofString());
         assertEquals(200, deleted.statusCode(), deleted.body());
     }

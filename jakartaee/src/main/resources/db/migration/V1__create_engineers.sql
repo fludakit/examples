@@ -1,4 +1,0 @@
-CREATE TABLE engineers (
-    id BIGINT BIGINT PRIMARY KEY,
-    dev_name VARCHAR(255) NOT NULL
-);
