@@ -75,7 +75,7 @@
 
         <!-- Servlet container and CDI -->
         <tomcat.version>11.0.26</tomcat.version>
-        <weld.version>6.0.4.Final</weld.version>
+        <weld.version>7.0.0.Final</weld.version>
 
         <!-- Databases -->
         <mariadb.version>3.5.10</mariadb.version>
