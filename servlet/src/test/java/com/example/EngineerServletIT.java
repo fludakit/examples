@@ -33,8 +33,7 @@ public class EngineerServletIT {
                         DataSourceProducer.class,
                         Engineer.class,
                         EngineerService.class,
-                        EngineerServlet.class,
-                        SqlInitBootstrapper.class
+                        EngineerServlet.class
                 )
                 .addAsWebInfResource("test-web.xml", "web.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
