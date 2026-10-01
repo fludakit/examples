@@ -27,9 +27,13 @@ jobs:
           repository: fludakit/jdbc-client
           path: jdbc-client
       - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
+        run: mvn -B -ntp -s .github/settings.xml -f jdbc-client/pom.xml install -DskipTests
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - name: Build vanilla example
-        run: mvn -B -ntp -pl vanilla verify
+        run: mvn -B -ntp -s .github/settings.xml -pl vanilla verify
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
   javase:
     name: Java SE (core + CDI, Weld SE)
@@ -50,9 +54,13 @@ jobs:
           repository: fludakit/jdbc-client
           path: jdbc-client
       - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
+        run: mvn -B -ntp -s .github/settings.xml -f jdbc-client/pom.xml install -DskipTests
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - name: Build javase example
-        run: mvn -B -ntp -pl javase verify
+        run: mvn -B -ntp -s .github/settings.xml -pl javase verify
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
   servlet:
     name: Servlet (Tomcat 11 + MariaDB)
@@ -86,9 +94,13 @@ jobs:
           repository: fludakit/jdbc-client
           path: jdbc-client
       - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
+        run: mvn -B -ntp -s .github/settings.xml -f jdbc-client/pom.xml install -DskipTests
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - name: Run servlet ITs on embedded Tomcat
-        run: mvn -B -ntp -pl servlet -Parq-tomcat-embedded verify
+        run: mvn -B -ntp -s .github/settings.xml -pl servlet -Parq-tomcat-embedded verify
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
   jakartaee-glassfish:
     name: Jakarta EE (GlassFish)
@@ -123,9 +135,13 @@ jobs:
           repository: fludakit/jdbc-client
           path: jdbc-client
       - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
+        run: mvn -B -ntp -s .github/settings.xml -f jdbc-client/pom.xml install -DskipTests
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - name: Run GlassFish integration tests
-        run: mvn -B -ntp -pl jakartaee -Parq-glassfish-managed verify
+        run: mvn -B -ntp -s .github/settings.xml -pl jakartaee -Parq-glassfish-managed verify
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
   jakartaee-wildfly:
     name: Jakarta EE (WildFly)
@@ -160,6 +176,10 @@ jobs:
           repository: fludakit/jdbc-client
           path: jdbc-client
       - name: Install jdbc-client
-        run: mvn -B -ntp -f jdbc-client/pom.xml install -DskipTests
+        run: mvn -B -ntp -s .github/settings.xml -f jdbc-client/pom.xml install -DskipTests
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - name: Run WildFly integration tests
-        run: mvn -B -ntp -pl jakartaee -Parq-wildfly-managed verify
+        run: mvn -B -ntp -s .github/settings.xml -pl jakartaee -Parq-wildfly-managed verify
+        env:
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}

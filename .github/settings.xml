@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+    <servers>
+        <server>
+            <id>github-parent</id>
+            <username>fludakit</username>
+            <password>${env.PACKAGES_TOKEN}</password>
+        </server>
+        <server>
+            <id>github-jdbc-client</id>
+            <username>fludakit</username>
+            <password>${env.PACKAGES_TOKEN}</password>
+        </server>
+        <server>
+            <id>github-sql-init</id>
+            <username>fludakit</username>
+            <password>${env.PACKAGES_TOKEN}</password>
+        </server>
+        <server>
+            <id>github-tx</id>
+            <username>fludakit</username>
+            <password>${env.PACKAGES_TOKEN}</password>
+        </server>
+    </servers>
+</settings>
