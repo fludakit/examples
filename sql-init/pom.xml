@@ -19,7 +19,7 @@
 
     <properties>
         <testcontainers.version>1.21.4</testcontainers.version>
-        <localstack.version>1.20.4</localstack.version>
+        <localstack.version>1.21.4</localstack.version>
         <aws-sdk.version>2.55.7</aws-sdk.version>
     </properties>
 
