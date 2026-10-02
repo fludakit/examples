@@ -6,11 +6,12 @@ import io.github.fludakit.jdbc.cdi.JdbcClientProducer;
 import io.github.fludakit.sqlinit.cdi.SqlInitBootstrapper;
 import io.github.fludakit.tx.cdi.TransactionalCdiExtension;
 import io.github.fludakit.tx.cdi.TransactionalInterceptor;
-import org.jboss.weld.junit5.auto.AddBeanClasses;
-import org.jboss.weld.junit5.auto.AddExtensions;
-import org.jboss.weld.junit5.auto.EnableAutoWeld;
+import org.jboss.weld.junit5.WeldInitiator;
+import org.jboss.weld.junit5.WeldJunit5Extension;
+import org.jboss.weld.junit5.WeldSetup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import javax.sql.DataSource;
@@ -20,10 +21,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@EnableAutoWeld
-@AddBeanClasses({JdbcClientProducer.class, ConverterRegistryProducer.class, DataSourceProducer.class, EngineerService.class, SqlInitBootstrapper.class, TransactionalInterceptor.class})
-@AddExtensions({TransactionalCdiExtension.class})
+/**
+ * Tests the Java SE example with CDI, JDBC client, SQL init, and transactional support.
+ * Uses {@link WeldInitiator} to explicitly declare all beans and extensions.
+ */
+@ExtendWith(WeldJunit5Extension.class)
 class JavaSeExampleTest {
+
+    @WeldSetup
+    WeldInitiator setup = WeldInitiator
+            .from(JdbcClientProducer.class, ConverterRegistryProducer.class, DataSourceProducer.class,
+                    EngineerService.class, SqlInitBootstrapper.class, TransactionalInterceptor.class,
+                    TransactionalCdiExtension.class)
+            .build();
 
     @Inject
     JdbcClient client;
