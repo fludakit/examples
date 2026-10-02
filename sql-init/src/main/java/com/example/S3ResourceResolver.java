@@ -65,10 +65,15 @@ public class S3ResourceResolver implements ResourceResolver {
     }
 
     private String[] parseLocation(String location) {
-        String withoutProtocol = location.startsWith("s3://") ? location.substring(5) : location;
+        String withoutProtocol = location;
+        if (location.startsWith("s3://")) {
+            withoutProtocol = location.substring(5);
+        } else if (location.startsWith("//")) {
+            withoutProtocol = location.substring(2);
+        }
         int slashIndex = withoutProtocol.indexOf('/');
         if (slashIndex < 0) {
-            throw new IllegalArgumentException("Invalid S3 location (expected s3://bucket/key): " + location);
+            throw new IllegalArgumentException("Invalid S3 location (expected s3://bucket/key or //bucket/key): " + location);
         }
         String bucket = withoutProtocol.substring(0, slashIndex);
         String key = withoutProtocol.substring(slashIndex + 1);
