@@ -39,10 +39,7 @@ public class JdbcClientIT {
                 .resolve("org.postgresql:postgresql",
                         "io.github.fludakit:fluda-jdbc-client-core",
                         "io.github.fludakit:fluda-jdbc-client-cdi",
-                        "io.github.fludakit:fluda-jdbc-client-config",
-                        "io.github.fludakit:fluda-sql-init-core",
-                        "io.github.fludakit:fluda-sql-init-config",
-                        "io.github.fludakit:fluda-sql-init-cdi"
+                        "io.github.fludakit:fluda-jdbc-client-config"
                 )
                 .withoutTransitivity()
                 .asFile();
