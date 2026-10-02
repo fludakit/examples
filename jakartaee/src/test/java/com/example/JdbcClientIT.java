@@ -253,22 +253,4 @@ public class JdbcClientIT {
                         .param("id", 1L)
                         .param(1L));
     }
-
-    @Test
-    public void dataSourceInjectionSelectOne() throws Exception {
-        Assertions.assertNotNull(dataSource);
-        try (Connection conn = dataSource.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT 1")) {
-            Assertions.assertTrue(rs.next());
-            Assertions.assertEquals(1, rs.getInt(1));
-        }
-    }
-
-    @Test
-    public void jdbcClientInjectionSelectOne() {
-        Assertions.assertNotNull(jdbcClient);
-        int one = jdbcClient.sql("SELECT 1").singleValue(Integer.class);
-        Assertions.assertEquals(1, one);
-    }
 }

@@ -1,11 +1,11 @@
 package com.example;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
-import jakarta.annotation.Resource;
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
-import jakarta.inject.Named;
 
 /**
  * Declares a self-contained PostgreSQL {@link DataSource} under the portable {@code java:app/MyDS}
@@ -21,12 +21,10 @@ import jakarta.inject.Named;
 @ApplicationScoped
 public class DataSourceProducer {
 
-    @Resource(lookup = "java:app/MyDS")
-    private DataSource dataSource;
-
     @Produces
     @ApplicationScoped
-    public DataSource expose() {
-        return dataSource;
+    public DataSource expose() throws NamingException {
+        InitialContext ctx = new InitialContext();
+        return (DataSource) ctx.lookup("java:app/MyDS");
     }
 }

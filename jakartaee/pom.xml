@@ -36,6 +36,18 @@
             <artifactId>fluda-jdbc-client-config</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.github.fludakit</groupId>
+            <artifactId>fluda-sql-init-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.fludakit</groupId>
+            <artifactId>fluda-sql-init-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.fludakit</groupId>
+            <artifactId>fluda-sql-init-cdi</artifactId>
+        </dependency>
+        <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
             <scope>provided</scope>
