@@ -1,0 +1,79 @@
+name: Jakarta EE Example
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'jakartaee/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'jakartaee/**'
+  workflow_dispatch:
+
+jobs:
+  glassfish:
+    name: Jakarta EE (GlassFish)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U testuser"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Run GlassFish integration tests
+        run: mvn -B -ntp -pl jakartaee -Parq-glassfish-managed verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  wildfly:
+    name: Jakarta EE (WildFly)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U testuser"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Run WildFly integration tests
+        run: mvn -B -ntp -pl jakartaee -Parq-wildfly-managed verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

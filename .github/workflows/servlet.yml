@@ -1,0 +1,45 @@
+name: Servlet Example
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'servlet/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'servlet/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Servlet (Tomcat 11 + MariaDB)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: servlet
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "healthcheck.sh --connect --innodb_initialized"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Run servlet ITs on embedded Tomcat
+        run: mvn -B -ntp -pl servlet -Parq-tomcat-embedded verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

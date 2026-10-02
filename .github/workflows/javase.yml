@@ -1,0 +1,32 @@
+name: Java SE Example
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'javase/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'javase/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Java SE (core + CDI, Weld SE)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Build javase example
+        run: mvn -B -ntp -pl javase verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
