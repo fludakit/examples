@@ -1,7 +1,7 @@
 package com.example;
 
 import io.github.fludakit.jdbc.JdbcClient;
-import io.github.fludakit.sqlinit.cdi.SqlInitBootstrapper;
+import jakarta.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.container.annotation.ArquillianTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jakarta.inject.Inject;
 
 @ArquillianTest
 public class SqlInitIT {
@@ -41,6 +40,7 @@ public class SqlInitIT {
                 .addClasses(DataSourceProducer.class,
                         Engineer.class)
                 .addAsResource("db/migration/V1__create_engineers.sql")
+                .addAsResource("db/migration/V2__data_seeds.sql")
                 .addAsResource("META-INF/microprofile-config.properties", "META-INF/microprofile-config.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         LOGGER.log(Level.INFO, "deployment archive: {0}", archive.toString(true));
