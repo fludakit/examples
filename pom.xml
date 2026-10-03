@@ -40,12 +40,14 @@
         <module>servlet</module>
         <module>jakartaee</module>
         <module>sql-init</module>
+        <module>mail-sendgrid</module>
     </modules>
 
     <properties>
         <fluda-jdbc-client.version>1.0.0-SNAPSHOT</fluda-jdbc-client.version>
         <fluda-sql-init.version>1.0.0-SNAPSHOT</fluda-sql-init.version>
         <fluda-tx.version>1.0.0-SNAPSHOT</fluda-tx.version>
+        <fluda-mail.version>1.0.0-SNAPSHOT</fluda-mail.version>
 
         <!-- Global Config -->
         <maven.compiler.release>21</maven.compiler.release>
