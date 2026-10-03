@@ -1,5 +1,11 @@
 # FluDa Examples
 
+[![Vanilla](https://github.com/fludakit/examples/actions/workflows/vanilla.yml/badge.svg)](https://github.com/fludakit/examples/actions/workflows/vanilla.yml)
+[![Java SE](https://github.com/fludakit/examples/actions/workflows/javase.yml/badge.svg)](https://github.com/fludakit/examples/actions/workflows/javase.yml)
+[![Servlet](https://github.com/fludakit/examples/actions/workflows/servlet.yml/badge.svg)](https://github.com/fludakit/examples/actions/workflows/servlet.yml)
+[![Jakarta EE](https://github.com/fludakit/examples/actions/workflows/jakartaee.yml/badge.svg)](https://github.com/fludakit/examples/actions/workflows/jakartaee.yml)
+[![SQL Init](https://github.com/fludakit/examples/actions/workflows/sql-init.yml/badge.svg)](https://github.com/fludakit/examples/actions/workflows/sql-init.yml)
+
 Runnable examples for the fluent JDBC client.
 
 ## Overview
