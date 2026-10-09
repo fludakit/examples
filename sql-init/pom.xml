@@ -18,8 +18,7 @@
     <description>SQL init example with custom version strategy and S3 resource resolver.</description>
 
     <properties>
-        <testcontainers.version>1.21.4</testcontainers.version>
-        <localstack.version>1.21.4</localstack.version>
+        <testcontainers.version>2.0.5</testcontainers.version>
         <aws-sdk.version>2.55.7</aws-sdk.version>
     </properties>
 
@@ -59,13 +58,13 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>localstack</artifactId>
-            <version>${localstack.version}</version>
+            <artifactId>testcontainers-localstack</artifactId>
+            <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
