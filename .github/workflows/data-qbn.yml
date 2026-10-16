@@ -1,0 +1,32 @@
+name: Data Query-by-Method-Name Example
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'data-qbn/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'data-qbn/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Data QBN (query-by-method-name, Weld SE + H2)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Build data-qbn example
+        run: mvn -B -ntp -pl data-qbn verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

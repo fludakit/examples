@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>fluda-examples-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>data-qbn-example</artifactId>
+    <packaging>jar</packaging>
+
+    <name>FluDa :: Examples :: Data Query-by-Method-Name</name>
+    <description>Query-by-method-name (qbn) repositories: the task corpus round-trips an enum column,
+        a hand-written default finder on the JdbcClient escape hatch, and finders whose predicates are
+        derived from the method name (CONTAINS, LIKE) with an offset-paged LIKE.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.fludakit</groupId>
+            <artifactId>fluda-data-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.fludakit</groupId>
+            <artifactId>fluda-jdbc-client-cdi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.data</groupId>
+            <artifactId>jakarta.data-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.github.fludakit</groupId>
+                            <artifactId>fluda-data-processor</artifactId>
+                            <version>${fluda-data.version}</version>
+                        </path>
+                        <!-- qbn on the processor path: this example derives finders from the method NAME. -->
+                        <path>
+                            <groupId>io.github.fludakit</groupId>
+                            <artifactId>fluda-data-qbn</artifactId>
+                            <version>${fluda-data.version}</version>
+                        </path>
+                        <!-- The processor references @ApplicationScoped/@Inject while generating; its
+                             own cdi-api dependency is `provided`, so it is not resolved transitively. -->
+                        <path>
+                            <groupId>jakarta.enterprise</groupId>
+                            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,32 @@
+name: Data Aggregate Example
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'data-aggregate/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'data-aggregate/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Data Aggregate (CV aggregate, Weld SE + H2)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Build data-aggregate example
+        run: mvn -B -ntp -pl data-aggregate verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

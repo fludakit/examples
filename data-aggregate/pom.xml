@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>fluda-examples-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>data-aggregate-example</artifactId>
+    <packaging>jar</packaging>
+
+    <name>FluDa :: Examples :: Data Aggregate</name>
+    <description>The CV aggregate: a flattened @ValueObject address, composition entity collections
+        (workHistory, education) that cascade on save/update with a diff sync, an element collection of
+        contact value objects, and static-metamodel sorts through embedded and collection paths.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.fludakit</groupId>
+            <artifactId>fluda-data-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.github.fludakit</groupId>
+            <artifactId>fluda-jdbc-client-cdi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.data</groupId>
+            <artifactId>jakarta.data-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld</groupId>
+            <artifactId>weld-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.github.fludakit</groupId>
+                            <artifactId>fluda-data-processor</artifactId>
+                            <version>${fluda-data.version}</version>
+                        </path>
+                        <!-- qbn on the path: the aggregate's countByWorkHistoryCompany total is
+                             resolved from the method name (the @Find overload carries @By instead). -->
+                        <path>
+                            <groupId>io.github.fludakit</groupId>
+                            <artifactId>fluda-data-qbn</artifactId>
+                            <version>${fluda-data.version}</version>
+                        </path>
+                        <!-- The processor references @ApplicationScoped/@Inject while generating; its
+                             own cdi-api dependency is `provided`, so it is not resolved transitively. -->
+                        <path>
+                            <groupId>jakarta.enterprise</groupId>
+                            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
