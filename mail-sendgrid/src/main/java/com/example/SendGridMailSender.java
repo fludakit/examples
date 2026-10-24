@@ -49,13 +49,14 @@ public class SendGridMailSender implements MailSender {
         }
 
         for (MailAttachment attachment : emailMessage.getAttachments()) {
-            try (InputStream is = attachment.toDataSource().getInputStream()) {
+            var dataSource = attachment.toDataSource();
+            try (InputStream is = dataSource.getInputStream()) {
                 byte[] bytes = is.readAllBytes();
                 String base64Content = Base64.getEncoder().encodeToString(bytes);
 
                 Attachments sdkAttachment = new Attachments();
                 sdkAttachment.setContent(base64Content);
-                sdkAttachment.setType(attachment.toDataSource().getContentType());
+                sdkAttachment.setType(dataSource.getContentType());
                 sdkAttachment.setFilename(attachment.getFilename());
                 sdkAttachment.setDisposition("attachment");
 
@@ -75,6 +76,8 @@ public class SendGridMailSender implements MailSender {
             if (response.getStatusCode() < 200 || response.getStatusCode() >= 300) {
                 throw new MailException("SendGrid rejected payload: " + response.getStatusCode());
             }
+        } catch (MailException e) {
+            throw e;
         } catch (Exception ex) {
             throw new MailException("Fatal SendGrid execution runtime error", ex);
         }
