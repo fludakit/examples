@@ -34,22 +34,23 @@ public class SqlInitStandaloneExample {
                 .versionStrategy(new DateVersionStrategy())
                 .build();
 
-        // Create S3 client (for LocalStack in tests)
-        S3Client s3Client = S3Client.builder()
+        // Create S3 client (for LocalStack in tests); AutoCloseable, so drive it from try-with-resources
+        try (S3Client s3Client = S3Client.builder()
                 .endpointOverride(URI.create("http://localhost:4566"))
                 .region(Region.US_EAST_1)
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create("test", "test")))
                 .forcePathStyle(true)
-                .build();
+                .build()) {
 
-        // Register S3 resource resolver
-        ResourceResolverRegistry resolverRegistry = new ResourceResolverRegistry();
-        resolverRegistry.register("s3", new S3ResourceResolver(s3Client));
+            // Register S3 resource resolver
+            ResourceResolverRegistry resolverRegistry = new ResourceResolverRegistry();
+            resolverRegistry.register("s3", new S3ResourceResolver(s3Client));
 
-        // Run migrations
-        DbMigrator migrator = new DbMigrator(dataSource, config, resolverRegistry);
-        migrator.migrate();
+            // Run migrations
+            DbMigrator migrator = new DbMigrator(dataSource, config, resolverRegistry);
+            migrator.migrate();
+        }
 
         System.out.println("Database migration completed successfully!");
     }
