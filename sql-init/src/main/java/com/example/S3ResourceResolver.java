@@ -50,17 +50,26 @@ public class S3ResourceResolver implements ResourceResolver {
         String prefix = parts[1];
 
         List<Resource> resources = new ArrayList<>();
-        ListObjectsV2Request request = ListObjectsV2Request.builder()
-                .bucket(bucket)
-                .prefix(prefix)
-                .build();
-
-        ListObjectsV2Response response = s3Client.listObjectsV2(request);
-        for (S3Object obj : response.contents()) {
-            if (obj.key().endsWith(".sql")) {
-                resources.add(new S3Resource(bucket, obj.key()));
+        String continuationToken = null;
+        do {
+            ListObjectsV2Request.Builder request = ListObjectsV2Request.builder()
+                    .bucket(bucket)
+                    .prefix(prefix);
+            if (continuationToken != null) {
+                request.continuationToken(continuationToken);
             }
-        }
+
+            ListObjectsV2Response response = s3Client.listObjectsV2(request.build());
+            for (S3Object obj : response.contents()) {
+                if (obj.key().endsWith(".sql")) {
+                    resources.add(new S3Resource(bucket, obj.key()));
+                }
+            }
+            // ListObjectsV2 returns at most 1000 keys per call; follow continuation tokens
+            continuationToken = Boolean.TRUE.equals(response.isTruncated())
+                    ? response.nextContinuationToken()
+                    : null;
+        } while (continuationToken != null);
         return resources;
     }
 
