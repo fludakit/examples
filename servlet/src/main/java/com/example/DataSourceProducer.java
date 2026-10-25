@@ -1,6 +1,6 @@
 package com.example;
 
-import io.github.fludakit.tx.PlatformTransactionManager;
+import io.github.fludakit.tx.TransactionManager;
 import io.github.fludakit.tx.jdbc.DataSourceTransactionManager;
 import io.github.fludakit.tx.jdbc.TransactionAwareDataSourceProxy;
 
@@ -23,7 +23,7 @@ public class DataSourceProducer {
 
     @Produces
     @ApplicationScoped
-    public PlatformTransactionManager transactionManager() {
+    public TransactionManager<DataSource> transactionManager() {
         return new DataSourceTransactionManager(dataSource);
     }
 }
