@@ -14,14 +14,15 @@ import java.time.Duration;
  * {@link io.github.fludakit.jms.JmsClient} this example injects.</p>
  *
  * <pre>{@code
- * docker run -d --name artemis -p 61616:61616 -e ARTEMIS_USER=artemis \
- *   -e ARTEMIS_PASSWORD=artemis apache/activemq-artemis:2.40.0
+ * docker compose up -d artemis
  * ./mvnw -pl jms-client-artemis exec:java -Dexec.mainClass=com.example.ArtemisExample
  * }</pre>
  *
- * <p>The defaults in {@code microprofile-config.properties} match that container; override them
- * with the {@code JMS_BROKER_URL}, {@code JMS_USERNAME} and {@code JMS_PASSWORD} environment
- * variables to point at another broker.</p>
+ * <p>The defaults in {@code microprofile-config.properties} match that container (the
+ * {@code artemis} service in the repository's {@code docker-compose.yml}), so the class can also
+ * be launched straight from an IDE; override them with the {@code JMS_BROKER_URL},
+ * {@code JMS_USERNAME} and {@code JMS_PASSWORD} environment variables to point at another
+ * broker.</p>
  */
 public final class ArtemisExample {
 

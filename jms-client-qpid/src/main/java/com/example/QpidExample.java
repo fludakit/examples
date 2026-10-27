@@ -14,13 +14,14 @@ import java.time.Duration;
  * classpath.</p>
  *
  * <pre>{@code
- * docker run -d --name artemis -p 61616:61616 -p 5672:5672 -e ARTEMIS_USER=artemis \
- *   -e ARTEMIS_PASSWORD=artemis apache/activemq-artemis:2.40.0
+ * docker compose up -d artemis
  * ./mvnw -pl jms-client-qpid exec:java -Dexec.mainClass=com.example.QpidExample
  * }</pre>
  *
- * <p>The Artemis container above speaks AMQP on 5672; override the URL, user and password with
- * {@code JMS_BROKER_URL}, {@code JMS_USERNAME} and {@code JMS_PASSWORD} to use another broker.</p>
+ * <p>The Artemis container above speaks AMQP on 5672 (the {@code artemis} service in the
+ * repository's {@code docker-compose.yml}), so the class can also be launched straight from an
+ * IDE; override the URL, user and password with {@code JMS_BROKER_URL}, {@code JMS_USERNAME} and
+ * {@code JMS_PASSWORD} to use another broker.</p>
  */
 public final class QpidExample {
 

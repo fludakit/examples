@@ -14,11 +14,13 @@ import java.time.Duration;
  * variables so the example can point at any Artemis instance:</p>
  *
  * <pre>{@code
- * JMS_BROKER_URL=tcp://localhost:61616 JMS_USERNAME=artemis JMS_PASSWORD=artemis \
- *   ./mvnw -pl jms-client-vanilla exec:java -Dexec.mainClass=com.example.VanillaExample
+ * docker compose up -d artemis
+ * ./mvnw -pl jms-client-vanilla exec:java -Dexec.mainClass=com.example.VanillaExample
  * }</pre>
  *
- * <p>The defaults match the official Artemis container used by the test suite.</p>
+ * <p>The defaults match the {@code artemis} service in the repository's
+ * {@code docker-compose.yml} (the same image and credentials as the test suite), so the class can
+ * also be launched straight from an IDE.</p>
  */
 public final class VanillaExample {
 

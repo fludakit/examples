@@ -23,7 +23,8 @@ Runnable examples for the FluDa clients.
 
 The three `jms-client-*` examples need a running broker: the tests start one with Testcontainers
 (Docker required), and the `main()` classes default to `tcp://localhost:61616` (Artemis) or
-`amqp://localhost:5672` (Qpid). See [Run](#run) for a matching Docker command.
+`amqp://localhost:5672` (Qpid). See [Run](#run) for the matching Docker Compose service, and for
+running them from an IDE.
 
 ## Prerequisites
 
@@ -80,11 +81,11 @@ cd jms-client
 ```
 
 The JMS examples run against a local broker - an Artemis container serves all three (61616 for the
-core protocol, 5672 for AMQP 1.0):
+core protocol, 5672 for AMQP 1.0). It is part of `docker-compose.yml`, so:
 
 ```bash
-docker run -d --name artemis -p 61616:61616 -p 5672:5672 \
-  -e ARTEMIS_USER=artemis -e ARTEMIS_PASSWORD=artemis apache/activemq-artemis:2.40.0
+# start just the broker (add -d --wait to block until both ports are listening)
+docker compose up -d artemis
 
 # plain JmsClient
 ./mvnw -pl jms-client-vanilla exec:java -Dexec.mainClass=com.example.VanillaExample
@@ -96,9 +97,14 @@ docker run -d --name artemis -p 61616:61616 -p 5672:5672 \
 ./mvnw -pl jms-client-qpid exec:java -Dexec.mainClass=com.example.QpidExample
 ```
 
+The same broker works when the examples are launched from an IDE: run `VanillaExample`,
+`ArtemisExample` or `QpidExample` directly - the defaults in the sources and in
+`microprofile-config.properties` already point at `localhost:61616` / `localhost:5672` with
+`artemis`/`artemis`.
+
 Point them at another broker with `JMS_BROKER_URL`, `JMS_USERNAME` and `JMS_PASSWORD`.
 
-Start databases with Docker Compose:
+Start every service (databases and broker) with Docker Compose:
 
 ```bash
 docker compose up -d
