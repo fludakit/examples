@@ -20,11 +20,13 @@ Runnable examples for the FluDa clients.
 | [`jms-client-vanilla`](jms-client-vanilla) | jar | jms core, Artemis     | The core `JmsClient` with no CDI, sending and receiving a serializable payload on ActiveMQ Artemis.                              |
 | [`jms-client-artemis`](jms-client-artemis) | jar | jms core/cdi/config, Artemis | CDI + MicroProfile Config in Java SE: the `fluda.jms.artemis.*` section builds the factory, the client is injected.       |
 | [`jms-client-qpid`](jms-client-qpid) | jar       | jms core/cdi/config, Qpid (AMQP 1.0) | The same application code over AMQP 1.0, configured with `fluda.jms.qpid.*` instead.                                  |
+| [`jms-client-jakartaee`](jms-client-jakartaee) | war | jms core/cdi, GlassFish / WildFly broker | The CDI-injected `JmsClient` on a Jakarta EE server: a container-managed `JMSContext`, a `@JMSDestinationDefinition` queue and an Arquillian test on GlassFish 8 / WildFly 42. |
 
 The three `jms-client-*` examples need a running broker: the tests start one with Testcontainers
 (Docker required), and the `main()` classes default to `tcp://localhost:61616` (Artemis) or
 `amqp://localhost:5672` (Qpid). See [Run](#run) for the matching Docker Compose service, and for
-running them from an IDE.
+running them from an IDE. The
+`jms-client-jakartaee` example does not: the application server runs its own JMS provider.
 
 ## Prerequisites
 
@@ -65,6 +67,10 @@ cd jms-client
 
 # JMS examples (require Docker for the Artemis broker container)
 ./mvnw -pl jms-client-vanilla,jms-client-artemis,jms-client-qpid verify
+
+# JMS on Jakarta EE (unpacks and starts GlassFish 8 / WildFly 42)
+./mvnw -pl jms-client-jakartaee -Parq-glassfish-managed verify
+./mvnw -pl jms-client-jakartaee -Parq-wildfly-managed verify
 ```
 
 ## Run

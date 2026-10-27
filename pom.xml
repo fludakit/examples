@@ -47,6 +47,7 @@
         <module>jms-client-vanilla</module>
         <module>jms-client-artemis</module>
         <module>jms-client-qpid</module>
+        <module>jms-client-jakartaee</module>
     </modules>
 
     <properties>
