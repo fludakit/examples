@@ -1,0 +1,46 @@
+name: JMS Client Java SE Examples
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'jms-client-vanilla/**'
+      - 'jms-client-artemis/**'
+      - 'jms-client-qpid/**'
+      - '.github/workflows/jms-client-se.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'jms-client-vanilla/**'
+      - 'jms-client-artemis/**'
+      - 'jms-client-qpid/**'
+      - '.github/workflows/jms-client-se.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.module }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    strategy:
+      fail-fast: false
+      matrix:
+        module:
+          - jms-client-vanilla
+          - jms-client-artemis
+          - jms-client-qpid
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      # Testcontainers starts an Artemis broker (Docker is available on the runner).
+      - name: Run ${{ matrix.module }} tests
+        run: mvn -B -ntp -pl ${{ matrix.module }} verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
