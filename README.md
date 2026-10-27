@@ -6,7 +6,7 @@
 [![Jakarta EE](https://github.com/fludakit/examples/actions/workflows/jakartaee.yml/badge.svg)](https://github.com/fludakit/examples/actions/workflows/jakartaee.yml)
 [![SQL Init](https://github.com/fludakit/examples/actions/workflows/sql-init.yml/badge.svg)](https://github.com/fludakit/examples/actions/workflows/sql-init.yml)
 
-Runnable examples for the fluent JDBC client.
+Runnable examples for the FluDa clients.
 
 ## Overview
 
@@ -17,18 +17,30 @@ Runnable examples for the fluent JDBC client.
 | [`servlet`](servlet) | war       | core/cdi, MariaDB           | The core + CDI modules in a Servlet container (Tomcat 11), with the `DataSource` provided via JNDI from `META-INF/context.xml`. |
 | [`jakartaee`](jakartaee) | war       | core/cdi/config, PostgreSQL | The core + CDI modules behind a JAX-RS resource on GlassFish / WildFly, backed by PostgreSQL.                                   |
 | [`sql-init`](sql-init) | jar       | sql-init, H2, S3            | SQL migration initialization with custom version strategy and S3 resource resolver.                                             |
+| [`jms-client-vanilla`](jms-client-vanilla) | jar | jms core, Artemis     | The core `JmsClient` with no CDI, sending and receiving a serializable payload on ActiveMQ Artemis.                              |
+| [`jms-client-artemis`](jms-client-artemis) | jar | jms core/cdi/config, Artemis | CDI + MicroProfile Config in Java SE: the `fluda.jms.artemis.*` section builds the factory, the client is injected.       |
+| [`jms-client-qpid`](jms-client-qpid) | jar       | jms core/cdi/config, Qpid (AMQP 1.0) | The same application code over AMQP 1.0, configured with `fluda.jms.qpid.*` instead.                                  |
+
+The three `jms-client-*` examples need a running broker: the tests start one with Testcontainers
+(Docker required), and the `main()` classes default to `tcp://localhost:61616` (Artemis) or
+`amqp://localhost:5672` (Qpid). See [Run](#run) for a matching Docker command.
 
 ## Prerequisites
 
 - JDK 21+
 - Maven 3.9+ (or the included Maven wrapper `./mvnw`)
-- The `fluda-jdbc-client` library installed in your local Maven repository
+- The `fluda-jdbc-client` library installed in your local Maven repository (JDBC examples)
+- The `fluda-jms-client` library installed in your local Maven repository (JMS examples)
 
-Install the library first:
+Install the libraries first:
 
 ```bash
 git clone https://github.com/fludakit/jdbc-client.git
 cd jdbc-client
+./mvnw install -DskipTests
+
+git clone https://github.com/fludakit/jms-client.git
+cd jms-client
 ./mvnw install -DskipTests
 ```
 
@@ -49,6 +61,9 @@ cd jdbc-client
 
 # sql-init (requires Docker for LocalStack tests)
 ./mvnw -pl sql-init verify
+
+# JMS examples (require Docker for the Artemis broker container)
+./mvnw -pl jms-client-vanilla,jms-client-artemis,jms-client-qpid verify
 ```
 
 ## Run
@@ -63,6 +78,25 @@ cd jdbc-client
 # jakartaee on WildFly 41
 ./mvnw -pl jakartaee -Pwildfly clean package wildfly:run
 ```
+
+The JMS examples run against a local broker - an Artemis container serves all three (61616 for the
+core protocol, 5672 for AMQP 1.0):
+
+```bash
+docker run -d --name artemis -p 61616:61616 -p 5672:5672 \
+  -e ARTEMIS_USER=artemis -e ARTEMIS_PASSWORD=artemis apache/activemq-artemis:2.40.0
+
+# plain JmsClient
+./mvnw -pl jms-client-vanilla exec:java -Dexec.mainClass=com.example.VanillaExample
+
+# CDI + config, Artemis native client
+./mvnw -pl jms-client-artemis exec:java -Dexec.mainClass=com.example.ArtemisExample
+
+# CDI + config, Qpid JMS over AMQP 1.0
+./mvnw -pl jms-client-qpid exec:java -Dexec.mainClass=com.example.QpidExample
+```
+
+Point them at another broker with `JMS_BROKER_URL`, `JMS_USERNAME` and `JMS_PASSWORD`.
 
 Start databases with Docker Compose:
 
