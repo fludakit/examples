@@ -1,12 +1,18 @@
-# Databases for running the examples locally.
+# Local infrastructure for running the examples.
 #
 # Mirrors the service containers declared in .github/workflows/examples.yml so the
 # examples can be run against the same database/user/password as CI.
 #
 #   docker compose -f examples/docker-compose.yml up -d
+#   docker compose -f examples/docker-compose.yml up -d artemis   # broker only
 #
 #   - MariaDB  : localhost:3306  (root/root, database "servlet")   -> examples/servlet
 #   - PostgreSQL: localhost:5432 (testuser/testpassword, db "testdb") -> examples/jakartaee
+#   - Artemis  : localhost:61616 (core), localhost:5672 (AMQP 1.0)  -> examples/jms-client-*
+#
+# The JMS examples use the same image and credentials as their Testcontainers tests
+# (apache/activemq-artemis:2.40.0, artemis/artemis), so the defaults baked into the
+# example sources and microprofile-config.properties point at this broker out of the box.
 
 services:
   mariadb:
@@ -35,3 +41,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  artemis:
+    image: apache/activemq-artemis:2.40.0
+    environment:
+      ARTEMIS_USER: artemis
+      ARTEMIS_PASSWORD: artemis
+    ports:
+      - "61616:61616" # core protocol (Artemis client)
+      - "5672:5672"   # AMQP 1.0 (Qpid JMS)
+    healthcheck:
+      # The image ships bash but no JMS client on PATH; a TCP connect is enough to
+      # know both acceptors are listening.
+      test: [ "CMD-SHELL", "bash -c '</dev/tcp/localhost/61616' && bash -c '</dev/tcp/localhost/5672'" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
