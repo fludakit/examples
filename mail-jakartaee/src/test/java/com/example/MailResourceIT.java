@@ -67,7 +67,7 @@ public class MailResourceIT {
 
         try (Jsonb jsonb = JsonbBuilder.create()) {
             var jsonResponse = jsonb.fromJson(response.body(), java.util.Map.class);
-            String message = jsonResponse.get("message").toString();
+            String message = String.valueOf(jsonResponse.get("message"));
             Assertions.assertNotNull(message, "Response should contain a message");
             Assertions.assertTrue(message.contains("rest-test@example.com"),
                 "Response should confirm email was sent");
