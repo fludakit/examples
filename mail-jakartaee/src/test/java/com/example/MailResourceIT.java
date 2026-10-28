@@ -1,7 +1,7 @@
 package com.example;
 
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.container.annotation.ArquillianTest;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -65,10 +65,12 @@ public class MailResourceIT {
 
         Assertions.assertEquals(200, response.statusCode(), "REST API should return 200");
 
-        JsonObject jsonResponse = Json.createReader(new java.io.StringReader(response.body())).readObject();
-        String message = jsonResponse.getString("message");
-        Assertions.assertNotNull(message, "Response should contain a message");
-        Assertions.assertTrue(message.contains("rest-test@example.com"),
-            "Response should confirm email was sent");
+        try (Jsonb jsonb = JsonbBuilder.create()) {
+            var jsonResponse = jsonb.fromJson(response.body(), java.util.Map.class);
+            String message = jsonResponse.get("message").toString();
+            Assertions.assertNotNull(message, "Response should contain a message");
+            Assertions.assertTrue(message.contains("rest-test@example.com"),
+                "Response should confirm email was sent");
+        }
     }
 }
