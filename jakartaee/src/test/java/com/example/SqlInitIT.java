@@ -26,9 +26,9 @@ public class SqlInitIT {
     public static WebArchive createDeployment() {
         var libs = Maven.resolver().loadPomFromFile("pom.xml")
                 .resolve("org.postgresql:postgresql",
-                        "io.github.fludakit:fluda-jdbc-client-core",
-                        "io.github.fludakit:fluda-jdbc-client-cdi",
-                        "io.github.fludakit:fluda-jdbc-client-config",
+                        "io.github.fludakit:fluda-jdbc-core",
+                        "io.github.fludakit:fluda-jdbc-cdi",
+                        "io.github.fludakit:fluda-jdbc-config",
                         "io.github.fludakit:fluda-sql-init-core",
                         "io.github.fludakit:fluda-sql-init-cdi",
                         "io.github.fludakit:fluda-sql-init-config"

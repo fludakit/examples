@@ -32,7 +32,7 @@ running them from an IDE. The
 
 - JDK 21+
 - Maven 3.9+ (or the included Maven wrapper `./mvnw`)
-- The `fluda-jdbc-client` library installed in your local Maven repository (JDBC examples)
+- The `fluda-jdbc` library installed in your local Maven repository (JDBC examples)
 - The `fluda-jms-client` library installed in your local Maven repository (JMS examples)
 
 Install the libraries first:
