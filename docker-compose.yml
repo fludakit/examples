@@ -9,6 +9,7 @@
 #   - MariaDB  : localhost:3306  (root/root, database "servlet")   -> examples/servlet
 #   - PostgreSQL: localhost:5432 (testuser/testpassword, db "testdb") -> examples/jakartaee
 #   - Artemis  : localhost:61616 (core), localhost:5672 (AMQP 1.0)  -> examples/jms-client-*
+#   - Mailpit  : localhost:1025 (SMTP), localhost:8025 (HTTP API)   -> examples/mail-jakartaee
 #
 # The JMS examples use the same image and credentials as their Testcontainers tests
 # (apache/activemq-artemis:2.40.0, artemis/artemis), so the defaults baked into the
@@ -58,3 +59,15 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # HTTP API / Web UI
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8025 || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

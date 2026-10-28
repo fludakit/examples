@@ -1,0 +1,73 @@
+name: Mail Jakarta EE Example
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'mail-jakartaee/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'mail-jakartaee/**'
+  workflow_dispatch:
+
+jobs:
+  glassfish:
+    name: Mail Jakarta EE (GlassFish)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    services:
+      mailpit:
+        image: axllent/mailpit:latest
+        ports:
+          - 1025:1025
+          - 8025:8025
+        options: >-
+          --health-cmd "wget --no-verbose --tries=1 --spider http://localhost:8025 || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Run GlassFish integration tests
+        run: mvn -B -ntp -pl mail-jakartaee -Parq-glassfish-managed verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  wildfly:
+    name: Mail Jakarta EE (WildFly)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    services:
+      mailpit:
+        image: axllent/mailpit:latest
+        ports:
+          - 1025:1025
+          - 8025:8025
+        options: >-
+          --health-cmd "wget --no-verbose --tries=1 --spider http://localhost:8025 || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Run WildFly integration tests
+        run: mvn -B -ntp -pl mail-jakartaee -Parq-wildfly-managed verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

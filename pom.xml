@@ -41,6 +41,7 @@
         <module>jakartaee</module>
         <module>sql-init</module>
         <module>mail-sendgrid</module>
+        <module>mail-jakartaee</module>
         <module>data</module>
         <module>data-qbn</module>
         <module>data-aggregate</module>
@@ -201,6 +202,18 @@
                 <groupId>io.github.fludakit</groupId>
                 <artifactId>fluda-sql-init-cdi</artifactId>
                 <version>${fluda-sql-init.version}</version>
+            </dependency>
+
+            <!-- FluDa Mail modules -->
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-mail-core</artifactId>
+                <version>${fluda-mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-mail-cdi</artifactId>
+                <version>${fluda-mail.version}</version>
             </dependency>
 
             <!-- FluDa Data modules (annotation processor + Jakarta Data runtime) -->
@@ -367,6 +380,13 @@
                 <groupId>org.jboss.arquillian.container</groupId>
                 <artifactId>arquillian-tomcat-embedded-10</artifactId>
                 <version>${arquillian-tomcat.version}</version>
+            </dependency>
+
+            <!-- Mail -->
+            <dependency>
+                <groupId>org.eclipse.angus</groupId>
+                <artifactId>angus-mail</artifactId>
+                <version>2.0.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
