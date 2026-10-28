@@ -11,7 +11,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>jms-client-qpid</artifactId>
+    <artifactId>jms-client-qpid-example</artifactId>
     <packaging>jar</packaging>
 
     <name>FluDa :: Examples :: JMS Client :: Qpid</name>
@@ -21,19 +21,19 @@
     <dependencies>
         <dependency>
             <groupId>io.github.fludakit</groupId>
-            <artifactId>fluda-jms-client-core</artifactId>
+            <artifactId>fluda-jms-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.fludakit</groupId>
-            <artifactId>fluda-jms-client-cdi</artifactId>
+            <artifactId>fluda-jms-cdi</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.fludakit</groupId>
-            <artifactId>fluda-jms-client-config</artifactId>
+            <artifactId>fluda-jms-config</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.qpid</groupId>
-            <artifactId>qpid-jms-client</artifactId>
+            <groupId>io.github.fludakit</groupId>
+            <artifactId>fluda-jms-qpid</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jboss.weld.se</groupId>

@@ -11,7 +11,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>jms-client-jakartaee</artifactId>
+    <artifactId>jms-client-jakartaee-example</artifactId>
     <packaging>war</packaging>
 
     <name>FluDa :: Examples :: JMS Client :: Jakarta EE</name>
@@ -29,11 +29,11 @@
     <dependencies>
         <dependency>
             <groupId>io.github.fludakit</groupId>
-            <artifactId>fluda-jms-client-core</artifactId>
+            <artifactId>fluda-jms-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.github.fludakit</groupId>
-            <artifactId>fluda-jms-client-cdi</artifactId>
+            <artifactId>fluda-jms-cdi</artifactId>
         </dependency>
         <dependency>
             <groupId>jakarta.platform</groupId>

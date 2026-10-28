@@ -11,7 +11,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>jms-client-vanilla</artifactId>
+    <artifactId>jms-client-vanilla-example</artifactId>
     <packaging>jar</packaging>
 
     <name>FluDa :: Examples :: JMS Client :: Vanilla</name>
@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>io.github.fludakit</groupId>
-            <artifactId>fluda-jms-client-core</artifactId>
+            <artifactId>fluda-jms-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
