@@ -1,10 +1,7 @@
 package com.example;
 
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.container.annotation.ArquillianTest;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -15,7 +12,11 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,26 +46,29 @@ public class MailResourceIT {
 
     @Test
     public void testRestApiSendEmail() throws Exception {
-        Client client = ClientBuilder.newClient();
-        try {
-            MailResource.EmailRequest request = new MailResource.EmailRequest(
-                "rest-test@example.com",
-                "REST User"
-            );
+        HttpClient httpClient = HttpClient.newHttpClient();
+        
+        String jsonBody = """
+            {
+                "to": "rest-test@example.com",
+                "userName": "REST User"
+            }
+            """;
+        
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(deploymentUrl.toString() + "api/mail/send"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .build();
 
-            Response response = client.target(deploymentUrl.toString())
-                    .path("api/mail/send")
-                    .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.json(request));
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            Assertions.assertEquals(200, response.getStatus(), "REST API should return 200");
+        Assertions.assertEquals(200, response.statusCode(), "REST API should return 200");
 
-            MailResource.EmailResponse emailResponse = response.readEntity(MailResource.EmailResponse.class);
-            Assertions.assertNotNull(emailResponse.message(), "Response should contain a message");
-            Assertions.assertTrue(emailResponse.message().contains("rest-test@example.com"),
-                "Response should confirm email was sent");
-        } finally {
-            client.close();
-        }
+        JsonObject jsonResponse = Json.createReader(new java.io.StringReader(response.body())).readObject();
+        String message = jsonResponse.getString("message");
+        Assertions.assertNotNull(message, "Response should contain a message");
+        Assertions.assertTrue(message.contains("rest-test@example.com"),
+            "Response should confirm email was sent");
     }
 }
