@@ -2,12 +2,15 @@ package com.example;
 
 import jakarta.annotation.Resource;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Singleton;
 import jakarta.mail.MailSessionDefinition;
 import jakarta.mail.Session;
+import io.github.fludakit.mail.cdi.JakartaMail;
 
 @ApplicationScoped
 @MailSessionDefinition(
-    name = "java:comp/mail/mySession",
+    name = "java:app/mail/mySession",
     host = "localhost",
     from = "noreply@example.com",
     transportProtocol = "smtp",
@@ -17,11 +20,14 @@ import jakarta.mail.Session;
         "mail.smtp.auth=false"
     }
 )
-public class MailResources {
+public class MailSetup {
 
-    @Resource(lookup = "java:comp/mail/mySession")
+    @Resource(lookup = "java:app/mail/mySession")
     private Session mailSession;
 
+    @Produces
+    @Singleton
+    @JakartaMail
     public Session getMailSession() {
         return mailSession;
     }

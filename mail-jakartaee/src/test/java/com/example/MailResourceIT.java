@@ -38,7 +38,7 @@ public class MailResourceIT {
                 .asFile();
         WebArchive archive = ShrinkWrap.create(WebArchive.class, "mail-rest.war")
                 .addAsLibraries(libs)
-                .addPackages(true, "com.example")
+                .addClasses(MailSetup.class, MailService.class, MailResource.class, JaxRsApplication.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         LOGGER.log(Level.INFO, "deployment archive: {0}", archive.toString(true));
         return archive;

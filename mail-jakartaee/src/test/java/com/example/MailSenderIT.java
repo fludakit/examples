@@ -1,6 +1,7 @@
 package com.example;
 
 import io.github.fludakit.mail.MailSender;
+import io.github.fludakit.mail.cdi.JakartaMail;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
@@ -27,6 +28,7 @@ public class MailSenderIT {
     private static final Logger LOGGER = Logger.getLogger(MailSenderIT.class.getName());
 
     @Inject
+    @JakartaMail
     private Session mailSession;
 
     @Inject
@@ -46,7 +48,7 @@ public class MailSenderIT {
                 .asFile();
         WebArchive archive = ShrinkWrap.create(WebArchive.class, "test-mail.war")
                 .addAsLibraries(libs)
-                .addPackages(true, "com.example")
+                .addClasses(MailSetup.class, MailService.class, MailSenderIT.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         LOGGER.log(Level.INFO, "deployment archive: {0}", archive.toString(true));
         return archive;
