@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="https://jakarta.ee/xml/ns/jakartaee"
+       xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/beans_4_1.xsd"
+       version="4.1">
+
+    <!--
+      Both fluda-tx-jdbc and fluda-tx-jpa are on the classpath, so both transaction manager
+      producers are discovered and injecting TransactionManager<?> would be ambiguous. This
+      application runs every step in a JPA-managed transaction — the JdbcClient joins it through
+      the TransactionAwareDataSourceProxy — so the JDBC manager is vetoed by
+      com.example.DisableJdbcTransactionManager, which is registered through META-INF/services
+      because a bean descriptor cannot filter another archive.
+    -->
+</beans>

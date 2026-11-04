@@ -49,6 +49,9 @@
         <module>jms-client-artemis</module>
         <module>jms-client-qpid</module>
         <module>jms-client-jakartaee</module>
+        <module>tx-jdbc</module>
+        <module>tx-jpa</module>
+        <module>tx-jdbc-jpa</module>
     </modules>
 
     <properties>
@@ -185,6 +188,11 @@
             <dependency>
                 <groupId>io.github.fludakit</groupId>
                 <artifactId>fluda-tx-jdbc</artifactId>
+                <version>${fluda-tx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.fludakit</groupId>
+                <artifactId>fluda-tx-jpa</artifactId>
                 <version>${fluda-tx.version}</version>
             </dependency>
 

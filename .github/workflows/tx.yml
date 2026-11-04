@@ -1,0 +1,45 @@
+name: Transaction Examples
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tx-jdbc/**'
+      - 'tx-jpa/**'
+      - 'tx-jdbc-jpa/**'
+      - '.github/workflows/tx.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'tx-jdbc/**'
+      - 'tx-jpa/**'
+      - 'tx-jdbc-jpa/**'
+      - '.github/workflows/tx.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.module }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    strategy:
+      fail-fast: false
+      matrix:
+        module:
+          - tx-jdbc
+          - tx-jpa
+          - tx-jdbc-jpa
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          java-version: '21'
+          distribution: temurin
+          cache: maven
+          server-id: "github-fludakit"
+      - name: Run ${{ matrix.module }} tests
+        run: mvn -B -ntp -pl ${{ matrix.module }} verify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
