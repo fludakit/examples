@@ -31,8 +31,8 @@ class TeamEntityTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            TeamRepositoryImpl.class,
-            PlayerRepositoryImpl.class).build();
+            TeamRepository_.class,
+            PlayerRepository_.class).build();
 
     @Inject TeamRepository teams;
     @Inject PlayerRepository players;
@@ -92,7 +92,7 @@ class TeamEntityTest {
         players.save(player("Alpha", ajax));
 
         Page<Team> page = teams.findAll(
-                PageRequest.ofPage(1).size(10), Order.by(_Team.players.name.asc()));
+                PageRequest.ofPage(1).size(10), Order.by(_Team.players.get(_Player.name).asc()));
 
         List<String> names = page.content().stream().map(Team::getName).toList();
         assertThat(names).contains(empty.getName());

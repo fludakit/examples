@@ -25,8 +25,8 @@ class ComposingToOneWriteTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            AuthorRepositoryImpl.class,
-            BookRepositoryImpl.class).build();
+            AuthorRepository_.class,
+            BookRepository_.class).build();
 
     @Inject AuthorRepository authors;
     @Inject BookRepository books;

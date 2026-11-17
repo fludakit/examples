@@ -81,7 +81,7 @@ public class Main {
 
             JdbcClient client = customers.getJdbcClient();
             System.out.println("row count via hatch  = "
-                    + client.sql("SELECT COUNT(*) FROM \"customer\"").singleValue(Long.class));
+                    + client.sql("SELECT COUNT(*) FROM \"customers\"").singleValue(Long.class));
         }
     }
 

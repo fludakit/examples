@@ -25,13 +25,13 @@ class TaskEnumTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            TaskRepositoryImpl.class).build();
+            TaskRepository_.class).build();
 
     @Inject TaskRepository tasks;
 
     @BeforeEach
     void seed() {
-        tasks.getJdbcClient().sql("DELETE FROM \"task\"").update();
+        tasks.getJdbcClient().sql("DELETE FROM \"tasks\"").update();
         insert("Ship it", Status.IN_PROGRESS);
         insert("Triage", Status.OPEN);
         insert("Archive", Status.DONE);

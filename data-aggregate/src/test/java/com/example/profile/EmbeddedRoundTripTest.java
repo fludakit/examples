@@ -26,7 +26,7 @@ class EmbeddedRoundTripTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            ProfileRepositoryImpl.class).build();
+            ProfileRepository_.class).build();
 
     @Inject ProfileRepository profiles;
 

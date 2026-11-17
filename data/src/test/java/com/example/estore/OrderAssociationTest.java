@@ -32,8 +32,8 @@ class OrderAssociationTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            CustomerRepositoryImpl.class,
-            OrderRepositoryImpl.class).build();
+            CustomerRepository_.class,
+            OrderRepository_.class).build();
 
     @Inject CustomerRepository customers;
     @Inject OrderRepository orders;

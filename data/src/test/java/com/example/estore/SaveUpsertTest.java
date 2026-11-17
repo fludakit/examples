@@ -27,7 +27,7 @@ class SaveUpsertTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            ProductRepositoryImpl.class).build();
+            ProductRepository_.class).build();
 
     @Inject ProductRepository products;
 

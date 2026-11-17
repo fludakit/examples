@@ -36,7 +36,7 @@ public class Main {
             System.out.println("findByTitleLike page = " + page.content().size());
 
             System.out.println("row count via hatch  = "
-                    + tasks.getJdbcClient().sql("SELECT COUNT(*) FROM \"task\"").singleValue(Long.class));
+                    + tasks.getJdbcClient().sql("SELECT COUNT(*) FROM \"tasks\"").singleValue(Long.class));
         }
     }
 

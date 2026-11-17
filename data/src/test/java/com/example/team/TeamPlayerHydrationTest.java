@@ -25,8 +25,8 @@ class TeamPlayerHydrationTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            TeamRepositoryImpl.class,
-            PlayerRepositoryImpl.class).build();
+            TeamRepository_.class,
+            PlayerRepository_.class).build();
 
     @Inject TeamRepository teams;
     @Inject PlayerRepository players;

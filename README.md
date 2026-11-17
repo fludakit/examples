@@ -17,6 +17,9 @@ Runnable examples for the FluDa clients.
 | [`servlet`](servlet) | war       | core/cdi, MariaDB           | The core + CDI modules in a Servlet container (Tomcat 11), with the `DataSource` provided via JNDI from `META-INF/context.xml`. |
 | [`jakartaee`](jakartaee) | war       | core/cdi/config, PostgreSQL | The core + CDI modules behind a JAX-RS resource on GlassFish / WildFly, backed by PostgreSQL.                                   |
 | [`sql-init`](sql-init) | jar       | sql-init, H2, S3            | SQL migration initialization with custom version strategy and S3 resource resolver.                                             |
+| [`data`](data)       | jar       | data, H2                    | Annotation-driven repositories: CRUD, `@Find`/`@By`, cursored paging, and the `JdbcClient` escape hatch. No query-by-method-name. |
+| [`data-qbn`](data-qbn) | jar     | data + qbn, H2              | Finders derived from the method name (`Contains`, `Like`, offset paging) beside a hand-written `JdbcClient` query.             |
+| [`data-aggregate`](data-aggregate) | jar | data, H2                | A CV aggregate: embedded address, cascaded entity collections, an element collection, and a company association.               |
 | [`jms-client-vanilla`](jms-client-vanilla) | jar | jms core, Artemis     | The core `JmsClient` with no CDI, sending and receiving a serializable payload on ActiveMQ Artemis.                              |
 | [`jms-client-artemis`](jms-client-artemis) | jar | jms core/cdi/config, Artemis | CDI + MicroProfile Config in Java SE: the `fluda.jms.artemis.*` section builds the factory, the client is injected.       |
 | [`jms-client-qpid`](jms-client-qpid) | jar       | jms core/cdi/config, Qpid (AMQP 1.0) | The same application code over AMQP 1.0, configured with `fluda.jms.qpid.*` instead.                                  |
@@ -64,6 +67,9 @@ cd jms-client
 
 # sql-init (requires Docker for LocalStack tests)
 ./mvnw -pl sql-init verify
+
+# data repositories (requires fluda-data installed locally)
+./mvnw -pl data,data-qbn,data-aggregate test
 
 # JMS examples (require Docker for the Artemis broker container)
 ./mvnw -pl jms-client-vanilla,jms-client-artemis,jms-client-qpid verify

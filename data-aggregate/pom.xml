@@ -17,7 +17,7 @@
     <name>FluDa :: Examples :: Data Aggregate</name>
     <description>The CV aggregate: a flattened @ValueObject address, composition entity collections
         (workHistory, education) that cascade on save/update with a diff sync, an element collection of
-        contact value objects, and static-metamodel sorts through embedded and collection paths.</description>
+        contact value objects, a composing preference, a company association, and static-metamodel sorts.</description>
 
     <dependencies>
         <dependency>
@@ -68,13 +68,6 @@
                         <path>
                             <groupId>io.github.fludakit</groupId>
                             <artifactId>fluda-data-processor</artifactId>
-                            <version>${fluda-data.version}</version>
-                        </path>
-                        <!-- qbn on the path: the aggregate's countByWorkHistoryCompany total is
-                             resolved from the method name (the @Find overload carries @By instead). -->
-                        <path>
-                            <groupId>io.github.fludakit</groupId>
-                            <artifactId>fluda-data-qbn</artifactId>
                             <version>${fluda-data.version}</version>
                         </path>
                         <!-- The processor references @ApplicationScoped/@Inject while generating; its

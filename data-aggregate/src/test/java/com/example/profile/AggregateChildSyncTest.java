@@ -29,17 +29,19 @@ class AggregateChildSyncTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            ProfileRepositoryImpl.class,
-            WorkExperienceRepositoryImpl.class).build();
+            ProfileRepository_.class,
+            CompanyRepository_.class,
+            WorkExperienceRepository_.class).build();
 
     @Inject ProfileRepository profiles;
+    @Inject CompanyRepository companies;
     @Inject WorkExperienceRepository workExperiences;
 
     @Test
     void childIdentitiesSurviveASecondSave() {
         Profile ada = profile("Ada");
-        ada.getWorkHistory().add(new WorkExperience("Analytical Engines", 1842, 1843));
-        ada.getWorkHistory().add(new WorkExperience("Difference Engines", 1844, 1845));
+        ada.getWorkHistory().add(job("Analytical Engines", 1842, 1843));
+        ada.getWorkHistory().add(job("Difference Engines", 1844, 1845));
         Profile saved = profiles.save(ada);
         List<Long> assigned = ids(saved.getWorkHistory());
         assertThat(assigned).doesNotContainNull();
@@ -56,24 +58,28 @@ class AggregateChildSyncTest {
     @Test
     void childIdentitiesSurviveAnUpdate() {
         Profile ada = profile("Ada");
-        ada.getWorkHistory().add(new WorkExperience("Analytical Engines", 1842, 1843));
+        ada.getWorkHistory().add(job("Analytical Engines", 1842, 1843));
         Profile saved = profiles.save(ada);
         Long childId = saved.getWorkHistory().get(0).getId();
+        Long companyId = saved.getWorkHistory().get(0).getCompany().getId();
 
-        saved.getWorkHistory().get(0).setCompany("Analytical Engine, No. 2");
+        Company renamed = saved.getWorkHistory().get(0).getCompany();
+        renamed.setName("Analytical Engine, No. 2");
+        companies.update(renamed);
         profiles.update(saved);
 
         Profile back = profiles.findById(saved.getId()).orElseThrow();
         assertThat(back.getWorkHistory()).hasSize(1);
         assertThat(back.getWorkHistory().get(0).getId()).isEqualTo(childId);
-        assertThat(back.getWorkHistory().get(0).getCompany()).isEqualTo("Analytical Engine, No. 2");
+        assertThat(back.getWorkHistory().get(0).getCompany().getId()).isEqualTo(companyId);
+        assertThat(companies.findById(companyId).orElseThrow().getName()).isEqualTo("Analytical Engine, No. 2");
     }
 
     @Test
     void aChildDroppedFromTheCollectionLosesItsRow() {
         Profile ada = profile("Ada");
-        ada.getWorkHistory().add(new WorkExperience("alpha", 1842, 1843));
-        ada.getWorkHistory().add(new WorkExperience("zeta", 1844, 1845));
+        ada.getWorkHistory().add(job("alpha", 1842, 1843));
+        ada.getWorkHistory().add(job("zeta", 1844, 1845));
         Profile saved = profiles.save(ada);
         WorkExperience keep = child(saved, "alpha");
         WorkExperience drop = child(saved, "zeta");
@@ -94,26 +100,28 @@ class AggregateChildSyncTest {
     @Test
     void aNewChildIsInsertedAlongsideTheExistingOnes() {
         Profile ada = profile("Ada");
-        ada.getWorkHistory().add(new WorkExperience("alpha", 1842, 1843));
+        WorkExperience alpha = job("alpha", 1842, 1843);
+        ada.getWorkHistory().add(alpha);
         Profile saved = profiles.save(ada);
         Long firstId = saved.getWorkHistory().get(0).getId();
 
-        saved.getWorkHistory().add(new WorkExperience("beta", 1846, 1847));
+        WorkExperience beta = job("beta", 1846, 1847);
+        saved.getWorkHistory().add(beta);
         profiles.save(saved);
 
         Profile back = profiles.findById(saved.getId()).orElseThrow();
         assertThat(back.getWorkHistory()).hasSize(2);
         assertThat(ids(back.getWorkHistory())).contains(firstId);
         assertThat(ids(back.getWorkHistory())).doesNotContainNull();
-        assertThat(back.getWorkHistory()).extracting(WorkExperience::getCompany)
-                .containsExactlyInAnyOrder("alpha", "beta");
+        assertThat(back.getWorkHistory()).extracting(w -> w.getCompany().getId())
+                .containsExactlyInAnyOrder(alpha.getCompany().getId(), beta.getCompany().getId());
     }
 
     @Test
     void emptyingTheCollectionRemovesEveryChildRow() {
         Profile ada = profile("Ada");
-        ada.getWorkHistory().add(new WorkExperience("alpha", 1842, 1843));
-        ada.getWorkHistory().add(new WorkExperience("zeta", 1844, 1845));
+        ada.getWorkHistory().add(job("alpha", 1842, 1843));
+        ada.getWorkHistory().add(job("zeta", 1844, 1845));
         Profile saved = profiles.save(ada);
         List<Long> assigned = ids(saved.getWorkHistory());
 
@@ -133,9 +141,13 @@ class AggregateChildSyncTest {
         return p;
     }
 
+    private WorkExperience job(String companyName, int yearStart, int yearEnd) {
+        return new WorkExperience(companies.save(new Company(companyName, "industry")), yearStart, yearEnd);
+    }
+
     private static WorkExperience child(Profile profile, String company) {
         return profile.getWorkHistory().stream()
-                .filter(w -> company.equals(w.getCompany()))
+                .filter(w -> company.equals(w.getCompany().getName()))
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("no child '" + company + "' in " + ids(profile.getWorkHistory())));
     }

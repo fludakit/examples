@@ -27,9 +27,9 @@ class CustomerRepositoryTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            CustomerRepositoryImpl.class,
-            ProductRepositoryImpl.class,
-            OrderRepositoryImpl.class).build();
+            CustomerRepository_.class,
+            ProductRepository_.class,
+            OrderRepository_.class).build();
 
     @Inject CustomerRepository customers;
     @Inject ProductRepository products;
@@ -110,15 +110,15 @@ class CustomerRepositoryTest {
     @Test
     void exposesTheInjectedJdbcClientThroughADeclaredAccessor() {
         // CustomerRepository declares `JdbcClient getJdbcClient();` like any other method, and the
-        // generated CustomerRepositoryImpl answers it with the client its own generated methods run
+        // generated CustomerRepository_ answers it with the client its own generated methods run
         // through. An ad-hoc statement proves it is the SAME connection, not a second one.
         customers.insert(customer("Ana", "ana@example.com"));
         customers.insert(customer("Bo", "bo@example.com"));
 
         JdbcClient client = customers.getJdbcClient();
         assertThat(client).isNotNull();
-        assertThat(client.sql("SELECT COUNT(*) FROM \"customer\"").singleValue(Long.class)).isEqualTo(2L);
-        assertThat(client.sql("SELECT name FROM \"customer\" ORDER BY name").query(String.class).list())
+        assertThat(client.sql("SELECT COUNT(*) FROM \"customers\"").singleValue(Long.class)).isEqualTo(2L);
+        assertThat(client.sql("SELECT name FROM \"customers\" ORDER BY name").query(String.class).list())
                 .containsExactly("Ana", "Bo");
     }
 

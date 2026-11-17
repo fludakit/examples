@@ -1,11 +1,14 @@
 package com.example;
 
 import com.example.profile.Address;
+import com.example.profile.Company;
+import com.example.profile.CompanyRepository;
 import com.example.profile.ContactPoint;
 import com.example.profile.Education;
 import com.example.profile.Profile;
 import com.example.profile.ProfileRepository;
 import com.example.profile.WorkExperience;
+import com.example.profile._Address;
 import com.example.profile._Profile;
 import jakarta.data.Order;
 import jakarta.data.page.Page;
@@ -23,6 +26,7 @@ public class Main {
     public static void main(String[] args) {
         try (WeldContainer container = new Weld().initialize()) {
             ProfileRepository profiles = container.select(ProfileRepository.class).get();
+            CompanyRepository companies = container.select(CompanyRepository.class).get();
 
             Profile ada = new Profile();
             ada.setFullName("Ada Lovelace");
@@ -31,7 +35,8 @@ public class Main {
             address.setZip(12345);
             ada.setAddress(address);
             ada.getContacts().add(new ContactPoint("EMAIL", "ada@example.com"));
-            ada.getWorkHistory().add(new WorkExperience("Analytical Engines", 1842, 1843));
+            Company engines = companies.save(new Company("Analytical Engines", "computing"));
+            ada.getWorkHistory().add(new WorkExperience(engines, 1842, 1843));
             ada.getEducation().add(new Education("University of London", 1840));
             Profile saved = profiles.save(ada);
 
@@ -43,10 +48,9 @@ public class Main {
 
             System.out.println("by city order        = "
                     + profiles.orderedByCity().get(0).getAddress().getCity());
-            System.out.println("countThroughColl.    = " + profiles.countByWorkHistoryCompany("Analytical Engines"));
 
             Page<Profile> page = profiles.findAll(
-                    PageRequest.ofPage(1).size(10), Order.by(_Profile.address.city.asc()));
+                    PageRequest.ofPage(1).size(10), Order.by(_Profile.address.get(_Address.city).asc()));
             System.out.println("paged sorted by city = " + page.content().size());
         }
     }

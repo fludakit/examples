@@ -29,9 +29,9 @@ class OrderCollectionHydrationTest {
             DataSourceProducer.class,
             JdbcClientProducer.class,
             ConverterRegistryProducer.class,
-            CustomerRepositoryImpl.class,
-            ProductRepositoryImpl.class,
-            OrderRepositoryImpl.class).build();
+            CustomerRepository_.class,
+            ProductRepository_.class,
+            OrderRepository_.class).build();
 
     @Inject CustomerRepository customers;
     @Inject ProductRepository products;
@@ -52,8 +52,16 @@ class OrderCollectionHydrationTest {
         Order found = orders.findById(saved.getId()).orElseThrow();
         assertThat(found.getOrderItems()).hasSize(2);
         assertThat(found.getOrderItems()).extracting(OrderItem::getQuantity).containsExactlyInAnyOrder(2, 5);
-        // Children rebuilt by the element-collection loader leave their @Association target null.
-        assertThat(found.getOrderItems()).allSatisfy(i -> assertThat(i.getProduct()).isNull());
+        // The element-collection loader rebuilds each child's @Association as an id-only partial.
+        assertThat(found.getOrderItems())
+                .extracting(OrderItem::getProduct)
+                .allSatisfy(p -> {
+                    assertThat(p).isNotNull();
+                    assertThat(p.getName()).isNull();
+                });
+        assertThat(found.getOrderItems())
+                .extracting(i -> i.getProduct().getId())
+                .containsExactlyInAnyOrder(widget.getId(), gizmo.getId());
         assertThat(found.getCustomer().getId()).isEqualTo(ana.getId());
 
         // replace-all update: drop the two children, add a single one back.
@@ -67,7 +75,7 @@ class OrderCollectionHydrationTest {
 
         // delete cascades children: the header is gone and the child table no longer references it.
         orders.delete(found);
-        Long remaining = jdbcClient.sql("SELECT COUNT(*) FROM order_order_items WHERE order_id = :id")
+        Long remaining = jdbcClient.sql("SELECT COUNT(*) FROM order_items WHERE order_id = :id")
                 .param("id", saved.getId()).singleValue(Long.class);
         assertThat(remaining).isZero();
     }
@@ -85,7 +93,10 @@ class OrderCollectionHydrationTest {
         assertThat(found).hasSize(1);
         assertThat(found.get(0).getOrderItems()).hasSize(1);
         assertThat(found.get(0).getOrderItems().get(0).getQuantity()).isEqualTo(3);
-        assertThat(found.get(0).getOrderItems().get(0).getProduct()).isNull();
+        Product itemProduct = found.get(0).getOrderItems().get(0).getProduct();
+        assertThat(itemProduct).isNotNull();
+        assertThat(itemProduct.getId()).isEqualTo(widget.getId());
+        assertThat(itemProduct.getName()).isNull();
     }
 
     private static Customer customer(String name, String email) {

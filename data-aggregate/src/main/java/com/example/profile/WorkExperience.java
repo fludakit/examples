@@ -1,24 +1,25 @@
 package com.example.profile;
 
+import io.github.fludakit.data.annotation.Association;
 import io.github.fludakit.data.annotation.Entity;
 import io.github.fludakit.data.annotation.Identity;
 
 /**
  * Composition entity-collection target of {@code Profile.workHistory}. The bare {@code profile}
- * inverse field classifies as a non-composing {@code Reference} mapping to {@code profile_id} — on
- * direct reads it materialises as an id-only partial.
+ * inverse field classifies as a non-composing reference on {@code profile_id}. {@code company} is
+ * an {@code @Association}: the aggregate stores {@code company_id} and does not insert the company.
  */
 @Entity
 public class WorkExperience {
     @Identity Long id;
-    String company;
+    @Association Company company;
     int yearStart;
     int yearEnd;
     Profile profile;
 
     public WorkExperience() {}
 
-    public WorkExperience(String company, int yearStart, int yearEnd) {
+    public WorkExperience(Company company, int yearStart, int yearEnd) {
         this.company = company;
         this.yearStart = yearStart;
         this.yearEnd = yearEnd;
@@ -26,8 +27,8 @@ public class WorkExperience {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getCompany() { return company; }
-    public void setCompany(String company) { this.company = company; }
+    public Company getCompany() { return company; }
+    public void setCompany(Company company) { this.company = company; }
     public int getYearStart() { return yearStart; }
     public void setYearStart(int yearStart) { this.yearStart = yearStart; }
     public int getYearEnd() { return yearEnd; }
