@@ -3,9 +3,10 @@ package com.example;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.fludakit.tx.TransactionManager;
-import io.github.fludakit.tx.jdbc.DataSourceTransactionManager;
+import io.github.fludakit.tx.jdbc.JdbcTransactionManager;
 import io.github.fludakit.tx.support.TransactionAwareDataSourceProxy;
 
+import java.sql.Connection;
 import javax.sql.DataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
@@ -32,7 +33,7 @@ public class DataSourceProducer {
 
     @Produces
     @ApplicationScoped
-    public TransactionManager<DataSource> transactionManager() {
-        return new DataSourceTransactionManager(raw);
+    public TransactionManager<Connection> transactionManager() {
+        return new JdbcTransactionManager(raw);
     }
 }
