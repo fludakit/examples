@@ -19,7 +19,7 @@
 
     <properties>
         <testcontainers.version>2.0.5</testcontainers.version>
-        <aws-sdk.version>2.55.7</aws-sdk.version>
+        <aws-sdk.version>2.57.7</aws-sdk.version>
     </properties>
 
     <dependencies>
