@@ -96,7 +96,7 @@
         <qpid-jms.version>2.7.0</qpid-jms.version>
 
         <!-- Servlet container and CDI -->
-        <tomcat.version>11.0.26</tomcat.version>
+        <tomcat.version>11.0.27</tomcat.version>
         <weld.version>6.0.3.Final</weld.version>
 
         <!-- Databases -->
