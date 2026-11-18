@@ -2,14 +2,20 @@ package com.example;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import io.github.fludakit.tx.TransactionManager;
-import io.github.fludakit.tx.jdbc.DataSourceTransactionManager;
-import io.github.fludakit.tx.jdbc.TransactionAwareDataSourceProxy;
+import io.github.fludakit.tx.support.TransactionAwareDataSourceProxy;
 
 import javax.sql.DataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Singleton;
 
+/**
+ * The pool and the transaction-aware view.
+ *
+ * <p>{@code JdbcTransactionManagerProducer} from {@code fluda-tx-jdbc} supplies the
+ * {@code TransactionManager}. The view is {@code @Singleton} so that producer sees the
+ * {@code TransactionAwareDataSourceProxy} instance and reuses it.</p>
+ */
 @ApplicationScoped
 public class DataSourceProducer {
 
@@ -25,14 +31,8 @@ public class DataSourceProducer {
     }
 
     @Produces
-    @ApplicationScoped
+    @Singleton
     public DataSource dataSource() {
         return new TransactionAwareDataSourceProxy(raw);
-    }
-
-    @Produces
-    @ApplicationScoped
-    public TransactionManager<DataSource> transactionManager() {
-        return new DataSourceTransactionManager(raw);
     }
 }

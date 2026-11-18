@@ -1,14 +1,20 @@
 package com.example;
 
-import io.github.fludakit.tx.TransactionManager;
-import io.github.fludakit.tx.jdbc.DataSourceTransactionManager;
-import io.github.fludakit.tx.jdbc.TransactionAwareDataSourceProxy;
+import io.github.fludakit.tx.support.TransactionAwareDataSourceProxy;
 
 import javax.sql.DataSource;
 import jakarta.annotation.Resource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Singleton;
 
+/**
+ * Exposes the container pool as the transaction-aware {@code DataSource}.
+ *
+ * <p>{@code JdbcTransactionManagerProducer} from {@code fluda-tx-jdbc} is the only
+ * {@code TransactionManager} bean. The view is {@code @Singleton} so that producer sees the
+ * {@code TransactionAwareDataSourceProxy} instance and reuses it.</p>
+ */
 @ApplicationScoped
 public class DataSourceProducer {
 
@@ -16,14 +22,8 @@ public class DataSourceProducer {
     private DataSource dataSource;
 
     @Produces
-    @ApplicationScoped
+    @Singleton
     public DataSource expose() {
         return new TransactionAwareDataSourceProxy(dataSource);
-    }
-
-    @Produces
-    @ApplicationScoped
-    public TransactionManager<DataSource> transactionManager() {
-        return new DataSourceTransactionManager(dataSource);
     }
 }

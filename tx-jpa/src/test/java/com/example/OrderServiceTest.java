@@ -20,7 +20,7 @@ import jakarta.inject.Inject;
 
 import jakarta.persistence.EntityManager;
 
-import io.github.fludakit.tx.RawDataSource;
+import io.github.fludakit.tx.support.RawPool;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,7 +39,7 @@ class OrderServiceTest {
     OrderService orders;
 
     @Inject
-    @RawDataSource
+    @RawPool
     DataSource dataSource;
 
     @BeforeEach

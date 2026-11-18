@@ -3,8 +3,8 @@ package com.example;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import io.github.fludakit.tx.RawDataSource;
-import io.github.fludakit.tx.jdbc.TransactionAwareDataSourceProxy;
+import io.github.fludakit.tx.support.RawPool;
+import io.github.fludakit.tx.support.TransactionAwareDataSourceProxy;
 
 import javax.sql.DataSource;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -30,7 +30,7 @@ public class DataSourceProducer {
      */
     @Produces
     @ApplicationScoped
-    @RawDataSource
+    @RawPool
     public DataSource rawDataSource() {
         return raw;
     }
