@@ -2,7 +2,7 @@ package com.example;
 
 import io.github.fludakit.tx.TransactionManager;
 import io.github.fludakit.tx.jdbc.DataSourceTransactionManager;
-import io.github.fludakit.tx.jdbc.TransactionAwareDataSourceProxy;
+import io.github.fludakit.tx.support.TransactionAwareDataSourceProxy;
 
 import javax.sql.DataSource;
 import jakarta.annotation.Resource;

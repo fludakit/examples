@@ -3,7 +3,7 @@ package com.example;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import io.github.fludakit.tx.RawDataSource;
+import io.github.fludakit.tx.support.RawPool;
 
 import javax.sql.DataSource;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -29,7 +29,7 @@ public class DataSourceProducer {
      */
     @Produces
     @ApplicationScoped
-    @RawDataSource
+    @RawPool
     public DataSource rawDataSource() {
         return raw;
     }
