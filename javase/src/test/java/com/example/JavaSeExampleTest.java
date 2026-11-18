@@ -5,6 +5,7 @@ import io.github.fludakit.jdbc.cdi.ConverterRegistryProducer;
 import io.github.fludakit.jdbc.cdi.JdbcClientProducer;
 import io.github.fludakit.sqlinit.cdi.SqlInitBootstrapper;
 import io.github.fludakit.tx.cdi.TransactionalCdiExtension;
+import io.github.fludakit.tx.jdbc.JdbcTransactionManagerProducer;
 import io.github.fludakit.tx.cdi.TransactionalInterceptor;
 import org.jboss.weld.junit5.WeldInitiator;
 import org.jboss.weld.junit5.WeldJunit5Extension;
@@ -31,8 +32,8 @@ class JavaSeExampleTest {
     @WeldSetup
     WeldInitiator setup = WeldInitiator
             .from(JdbcClientProducer.class, ConverterRegistryProducer.class, DataSourceProducer.class,
-                    EngineerService.class, SqlInitBootstrapper.class, TransactionalInterceptor.class,
-                    TransactionalCdiExtension.class)
+                    JdbcTransactionManagerProducer.class, EngineerService.class, SqlInitBootstrapper.class,
+                    TransactionalInterceptor.class, TransactionalCdiExtension.class)
             .build();
 
     @Inject
