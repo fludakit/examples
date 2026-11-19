@@ -2,7 +2,6 @@ package com.example;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import io.github.fludakit.tx.support.TransactionAwareDataSourceProxy;
 
 import javax.sql.DataSource;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -10,11 +9,7 @@ import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Singleton;
 
 /**
- * The pool and the transaction-aware view.
- *
- * <p>{@code JdbcTransactionManagerProducer} from {@code fluda-tx-jdbc} supplies the
- * {@code TransactionManager}. The view is {@code @Singleton} so that producer sees the
- * {@code TransactionAwareDataSourceProxy} instance and reuses it.</p>
+ * Produces the HikariCP {@link DataSource} used by the JdbcClient.
  */
 @ApplicationScoped
 public class DataSourceProducer {
@@ -33,6 +28,6 @@ public class DataSourceProducer {
     @Produces
     @Singleton
     public DataSource dataSource() {
-        return new TransactionAwareDataSourceProxy(raw);
+        return raw;
     }
 }

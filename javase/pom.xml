@@ -28,18 +28,6 @@
         </dependency>
         <dependency>
             <groupId>io.github.fludakit</groupId>
-            <artifactId>fluda-tx-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.fludakit</groupId>
-            <artifactId>fluda-tx-cdi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.fludakit</groupId>
-            <artifactId>fluda-tx-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.fludakit</groupId>
             <artifactId>fluda-sql-init-cdi</artifactId>
         </dependency>
         <dependency>

@@ -4,9 +4,6 @@ import io.github.fludakit.jdbc.JdbcClient;
 import io.github.fludakit.jdbc.cdi.ConverterRegistryProducer;
 import io.github.fludakit.jdbc.cdi.JdbcClientProducer;
 import io.github.fludakit.sqlinit.cdi.SqlInitBootstrapper;
-import io.github.fludakit.tx.cdi.TransactionalCdiExtension;
-import io.github.fludakit.tx.jdbc.JdbcTransactionManagerProducer;
-import io.github.fludakit.tx.cdi.TransactionalInterceptor;
 import org.jboss.weld.junit5.WeldInitiator;
 import org.jboss.weld.junit5.WeldJunit5Extension;
 import org.jboss.weld.junit5.WeldSetup;
@@ -19,12 +16,11 @@ import javax.sql.DataSource;
 import jakarta.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests the Java SE example with CDI, JDBC client, SQL init, and transactional support.
- * Uses {@link WeldInitiator} to explicitly declare all beans and extensions.
+ * Tests the Java SE example with CDI, JDBC client, and SQL init.
+ * Uses {@link WeldInitiator} to explicitly declare all beans.
  */
 @ExtendWith(WeldJunit5Extension.class)
 class JavaSeExampleTest {
@@ -32,8 +28,7 @@ class JavaSeExampleTest {
     @WeldSetup
     WeldInitiator setup = WeldInitiator
             .from(JdbcClientProducer.class, ConverterRegistryProducer.class, DataSourceProducer.class,
-                    JdbcTransactionManagerProducer.class, EngineerService.class, SqlInitBootstrapper.class,
-                    TransactionalInterceptor.class, TransactionalCdiExtension.class)
+                    EngineerService.class, SqlInitBootstrapper.class)
             .build();
 
     @Inject
@@ -69,11 +64,5 @@ class JavaSeExampleTest {
 
         service.delete(ada.id());
         assertTrue(service.findAll().isEmpty());
-    }
-
-    @Test
-    void transactionalRollback() {
-        assertThrows(IllegalStateException.class, () -> service.createTwo("Ada", null));
-        assertTrue(service.findAll().isEmpty(), "both inserts should be rolled back");
     }
 }
