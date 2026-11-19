@@ -1,15 +1,14 @@
 package com.example;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
+import jakarta.annotation.Resource;
 import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 
 /**
  * Declares a self-contained PostgreSQL {@link DataSource} under the portable {@code java:app/MyDS}
- * JNDI name and exposes it as a CDI bean.
+ * JNDI name, injects it with {@link Resource}, and exposes it as a CDI bean.
  */
 @DataSourceDefinition(
         name = "java:app/MyDS",
@@ -21,10 +20,12 @@ import jakarta.enterprise.inject.Produces;
 @ApplicationScoped
 public class DataSourceProducer {
 
+    @Resource(lookup = "java:app/MyDS")
+    private DataSource dataSource;
+
     @Produces
     @ApplicationScoped
-    public DataSource expose() throws NamingException {
-        InitialContext ctx = new InitialContext();
-        return (DataSource) ctx.lookup("java:app/MyDS");
+    public DataSource expose() {
+        return dataSource;
     }
 }
